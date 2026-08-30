@@ -1,0 +1,140 @@
+---
+import { Image } from "astro:assets";
+import Button from "@/components/Button.astro";
+import { siteMeta } from "@/data/site";
+
+export interface Props {
+  eyebrow: string;
+  title: string;
+  highlight: string;
+  avatars: ImageMetadata[];
+  statValue: string;
+  statLabel: string;
+  text: string;
+  ctaHref: string;
+  ctaLabel: string;
+  videoImage: ImageMetadata;
+  videoId?: string;
+}
+
+const {
+  eyebrow,
+  title,
+  highlight,
+  avatars,
+  statValue,
+  statLabel,
+  text,
+  ctaHref,
+  ctaLabel,
+  videoImage,
+  videoId = siteMeta.videoId
+} = Astro.props;
+const [beforeHighlight, afterHighlight] = title.split(highlight);
+---
+
+<section class="bg-white">
+  <div class="container section-space">
+    <p class="mb-5 text-[15px] font-semibold uppercase tracking-[0.12em] text-body" data-animate="fade-up">{eyebrow}</p>
+    <h2 class="section-title max-w-full xl:max-w-[70%]" data-animate="fade-up" style="--delay: 0.1s">
+      {beforeHighlight}<span class="text-secondary">{highlight}</span>{afterHighlight}
+    </h2>
+
+    <div class="mb-[60px] mt-[60px] flex flex-col gap-10 lg:flex-row">
+      <div class="lg:w-[40%]" data-animate="fade-up" style="--delay: 0.15s">
+        <div class="mb-6 flex">
+          {avatars.map((avatar, i) => (
+            <Image
+              src={avatar}
+              alt="Team member"
+              class:list={["h-[70px] w-[70px] rounded-full border-2 border-white object-cover", i > 0 ? "-ml-9" : ""]}
+            />
+          ))}
+        </div>
+        <p class="text-[36px] font-semibold leading-none md:text-[48px]">{statValue}</p>
+        <p class="mt-2 text-[18px] leading-[1.35] md:text-[22px]">{statLabel}</p>
+      </div>
+      <div class="border-border lg:w-[60%] lg:border-l lg:pl-[50px]" data-animate="fade-up" style="--delay: 0.25s">
+        <p class="text-[22px] leading-[1.65]">{text}</p>
+        <div class="mt-8">
+          <Button href={ctaHref} label={ctaLabel} />
+        </div>
+      </div>
+    </div>
+
+    <div class="relative" data-animate="fade-blur">
+      <button
+        id="about-video-btn"
+        aria-label="Play video"
+        class="group relative flex w-full items-center justify-center"
+      >
+        <Image
+          src={videoImage}
+          alt="About agency video"
+          class="w-full rounded-[12px] object-cover"
+        />
+        <span class="absolute flex h-[64px] w-[64px] items-center justify-center rounded-full bg-primary text-white transition-colors group-hover:bg-white group-hover:text-primary">
+          <svg width="20" height="24" viewBox="0 0 39 46" fill="none">
+            <path d="M36.544 19.476C39.184 21.083 39.184 24.916 36.544 26.523L6.436 44.85C3.687 46.523.166 44.545.166 41.327L.166 4.673C.166 1.455 3.687-.524 6.436 1.15L36.544 19.476Z" fill="currentColor"/>
+          </svg>
+        </span>
+      </button>
+    </div>
+  </div>
+</section>
+
+{/* About video modal */}
+<div
+  id="about-video-modal"
+  class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 opacity-0 invisible transition-all duration-300"
+  aria-modal="true"
+  role="dialog"
+>
+  <div class="relative w-full max-w-[900px] px-4">
+    <button
+      id="about-video-close"
+      aria-label="Close video"
+      class="absolute -top-10 right-4 flex h-9 w-9 items-center justify-center rounded-full bg-white/20 text-white transition hover:bg-white/40"
+    >
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <div class="relative aspect-video w-full overflow-hidden rounded-xl">
+      <iframe
+        id="about-video-iframe"
+        src=""
+        title="Influvo about video"
+        allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+        allowfullscreen
+        class="absolute inset-0 h-full w-full border-0"
+      ></iframe>
+    </div>
+  </div>
+</div>
+
+<script is:inline define:vars={{ videoId }}>
+  const aboutBtn = document.getElementById("about-video-btn");
+  const aboutModal = document.getElementById("about-video-modal");
+  const aboutClose = document.getElementById("about-video-close");
+  const aboutIframe = document.getElementById("about-video-iframe");
+  const ABOUT_VIDEO_SRC = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+
+  function openAbout() {
+    aboutIframe.src = ABOUT_VIDEO_SRC;
+    aboutModal.classList.remove("opacity-0", "invisible");
+    aboutModal.classList.add("opacity-100", "visible");
+    document.body.style.overflow = "hidden";
+  }
+  function closeAbout() {
+    aboutIframe.src = "";
+    aboutModal.classList.add("opacity-0", "invisible");
+    aboutModal.classList.remove("opacity-100", "visible");
+    document.body.style.overflow = "";
+  }
+
+  aboutBtn?.addEventListener("click", openAbout);
+  aboutClose?.addEventListener("click", closeAbout);
+  aboutModal?.addEventListener("click", (e) => { if (e.target === aboutModal) closeAbout(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeAbout(); });
+</script>

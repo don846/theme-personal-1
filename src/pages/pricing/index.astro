@@ -1,0 +1,19 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHero from "@/components/PageHero.astro";
+import PricingTable from "@/components/PricingTable.astro";
+import { pageHeroes, pricingPage } from "@/data/content";
+---
+
+<BaseLayout title="Pricing | Influvo Astro Theme" description="Find the perfect plan for your needs. Whether you're just starting or ready to scale.">
+  <PageHero {...pageHeroes.pricing} />
+
+  <PricingTable
+    heading={pricingPage.heading}
+    subheading={pricingPage.subheading}
+    ctaHref={pricingPage.ctaHref}
+    ctaLabel={pricingPage.ctaLabel}
+    plans={pricingPage.plans}
+    features={pricingPage.features}
+  />
+</BaseLayout>

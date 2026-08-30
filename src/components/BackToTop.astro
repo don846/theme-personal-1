@@ -1,0 +1,32 @@
+---
+---
+
+<button
+  id="back-to-top"
+  type="button"
+  aria-label="Back to top"
+  class="fixed bottom-6 right-6 z-40 flex h-11 w-11 translate-y-4 items-center justify-center rounded-full bg-primary text-white opacity-0 shadow-soft transition-all duration-300 pointer-events-none hover:bg-heading focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary md:h-12 md:w-12"
+>
+  <svg width="16" height="16" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+    <path d="M7 12V2M2 6.5 7 1.5l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+  </svg>
+</button>
+
+<script>
+  const toTopBtn = document.getElementById("back-to-top")!;
+
+  function updateVisibility() {
+    const visible = window.scrollY > 480;
+    toTopBtn.classList.toggle("opacity-0", !visible);
+    toTopBtn.classList.toggle("translate-y-4", !visible);
+    toTopBtn.classList.toggle("pointer-events-none", !visible);
+  }
+
+  window.addEventListener("scroll", updateVisibility, { passive: true });
+  updateVisibility();
+
+  toTopBtn.addEventListener("click", () => {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+  });
+</script>

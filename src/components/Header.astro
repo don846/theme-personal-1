@@ -1,0 +1,383 @@
+---
+import { Image } from "astro:assets";
+import Button from "@/components/Button.astro";
+import { homeLinks, logo, navLinks, pageLinks } from "@/data/site";
+
+export interface Props {
+  theme?: "light" | "dark";
+  darkCtaStyle?: "light" | "nav-dark";
+}
+
+const { theme = "light", darkCtaStyle = "light" } = Astro.props;
+const dark = theme === "dark";
+const pathname = Astro.url.pathname;
+---
+
+<header
+  id="site-header"
+  class:list={[
+    "z-20",
+    dark ? "absolute inset-x-0 top-0 lg:px-10 lg:pt-10" : "relative border-b border-border bg-white"
+  ]}
+>
+  {dark ? (
+    <div class="py-5 text-white md:py-6 lg:rounded-[12px] lg:border lg:border-[#565656] lg:bg-[#282828] lg:py-[30px] lg:[backdrop-filter:blur(25px)]">
+      <div class="container lg:px-0">
+        <div class="flex w-full min-w-0 items-center justify-between gap-2 sm:gap-3 lg:gap-4">
+
+          <!-- Logo -->
+          <div class="flex shrink-0 items-center gap-3 sm:gap-4 lg:gap-5">
+            <a href="/" class="flex items-center">
+              <Image src={logo.light} alt="Influvo logo" class="h-auto w-[140px] xl:w-[158px]" />
+            </a>
+            <span class="hidden w-px self-stretch shrink-0 bg-white/25 lg:block" aria-hidden="true" />
+          </div>
+
+          <!-- Desktop nav -->
+          <nav class="hidden min-w-0 flex-1 items-center justify-start gap-[17px] text-white lg:flex xl:gap-8">
+            <details class="group relative">
+              <summary class="flex cursor-pointer list-none items-center gap-1.5 text-[17px] font-medium tracking-[-0.02em] text-white hover:text-white/80 [&::-webkit-details-marker]:hidden">
+                Home
+                <svg class="mt-px h-2.5 w-2.5 shrink-0 opacity-80 transition-transform group-open:rotate-180" viewBox="0 0 13 8" fill="none">
+                  <path d="M6.278 7.058a1.46 1.46 0 0 1-.438-.048 1.22 1.22 0 0 1-.199-.14L.216 1.246c-.25-.25-.25-.637 0-.887s.637-.25.887 0l5.188 5.187L11.466.37c.25-.25.637-.25.887 0s.25.638 0 .888L6.728 6.883a.66.66 0 0 1-.45.175Z" fill="currentColor" />
+                </svg>
+              </summary>
+              <div class="absolute left-0 top-full mt-5 min-w-[200px] rounded-[20px] border border-border bg-white p-4 text-heading shadow-soft">
+                {homeLinks.map((item) => (
+                  <a class="block rounded-xl px-3 py-2 text-[17px] hover:bg-surface" href={item.href}>{item.label}</a>
+                ))}
+              </div>
+            </details>
+            {navLinks.map((item) => (
+              <a href={item.href} class="whitespace-nowrap text-[17px] font-medium tracking-[-0.02em] text-white/95 hover:text-white" aria-current={pathname.startsWith(item.href) ? "page" : undefined}>{item.label}</a>
+            ))}
+            <details class="group relative">
+              <summary class="flex cursor-pointer list-none items-center gap-1.5 text-[17px] font-medium tracking-[-0.02em] text-white hover:text-white/80 [&::-webkit-details-marker]:hidden">
+                Pages
+                <svg class="mt-px h-2.5 w-2.5 shrink-0 opacity-80 transition-transform group-open:rotate-180" viewBox="0 0 13 8" fill="none">
+                  <path d="M6.278 7.058a1.46 1.46 0 0 1-.438-.048 1.22 1.22 0 0 1-.199-.14L.216 1.246c-.25-.25-.25-.637 0-.887s.637-.25.887 0l5.188 5.187L11.466.37c.25-.25.637-.25.887 0s.25.638 0 .888L6.728 6.883a.66.66 0 0 1-.45.175Z" fill="currentColor" />
+                </svg>
+              </summary>
+              <div class="absolute left-0 top-full mt-5 grid w-[400px] grid-cols-2 grid-rows-7 grid-flow-col gap-0 rounded-[20px] border border-border bg-white p-4 text-heading shadow-soft">
+                {pageLinks.map((item) => (
+                  <a class="rounded-xl px-3 py-1 text-[17px] hover:bg-surface" href={item.href}>{item.label}</a>
+                ))}
+              </div>
+            </details>
+          </nav>
+
+          <!-- Desktop CTA -->
+          <div class="hidden shrink-0 items-center gap-4 lg:flex lg:gap-5">
+            <a href="/contact/" class="whitespace-nowrap text-[17px] font-medium tracking-[-0.02em] text-white/90 hover:text-white">Contact Us</a>
+            <span class="h-[22px] w-px shrink-0 bg-white/25" aria-hidden="true" />
+            <Button href="/contact/" label="Get Started" variant={darkCtaStyle === "nav-dark" ? "nav-dark" : "light"} compact={darkCtaStyle === "nav-dark"} />
+          </div>
+
+          <!-- Mobile hamburger -->
+          <button
+            id="mobile-menu-btn"
+            aria-label="Open menu"
+            aria-expanded="false"
+            aria-controls="mobile-menu"
+            class="flex h-10 w-10 flex-col items-center justify-center gap-[6px] rounded-lg lg:hidden"
+          >
+            <span class="hamburger-line block h-[2px] w-6 rounded-full bg-white transition-all duration-300"></span>
+            <span class="hamburger-line block h-[2px] w-6 rounded-full bg-white transition-all duration-300"></span>
+            <span class="hamburger-line block h-[2px] w-6 rounded-full bg-white transition-all duration-300"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  ) : (
+    <div class="container px-4 lg:px-0">
+      <div class="flex min-h-[76px] items-center justify-between gap-6 md:min-h-[106px]">
+
+        <!-- Logo -->
+        <a href="/" class="flex shrink-0 items-center">
+          <Image src={logo.dark} alt="Influvo logo" class="h-auto w-[130px] md:w-[170px]" />
+        </a>
+
+        <!-- Desktop nav -->
+        <nav class="hidden flex-1 items-center justify-center gap-10 text-heading lg:flex">
+          <details class="group relative">
+            <summary class="flex cursor-pointer list-none items-center gap-1 text-[18px] font-medium [&::-webkit-details-marker]:hidden">
+              Home
+              <svg class="mt-0.5 h-3 w-3 transition-transform group-open:rotate-180" viewBox="0 0 13 8" fill="none">
+                <path d="M6.278 7.058a1.46 1.46 0 0 1-.438-.048 1.22 1.22 0 0 1-.199-.14L.216 1.246c-.25-.25-.25-.637 0-.887s.637-.25.887 0l5.188 5.187L11.466.37c.25-.25.637-.25.887 0s.25.638 0 .888L6.728 6.883a.66.66 0 0 1-.45.175Z" fill="currentColor" />
+              </svg>
+            </summary>
+            <div class="absolute left-0 top-full mt-5 min-w-[200px] rounded-[20px] border border-border bg-white p-4 text-heading shadow-soft">
+              {homeLinks.map((item) => (
+                <a class="block rounded-xl px-3 py-2 text-[17px] hover:bg-surface" href={item.href}>{item.label}</a>
+              ))}
+            </div>
+          </details>
+          {navLinks.map((item) => (
+            <a href={item.href} class="text-[18px] font-medium hover:text-primary" aria-current={pathname.startsWith(item.href) ? "page" : undefined}>{item.label}</a>
+          ))}
+          <details class="group relative">
+            <summary class="flex cursor-pointer list-none items-center gap-1 text-[18px] font-medium [&::-webkit-details-marker]:hidden">
+              Pages
+              <svg class="mt-0.5 h-3 w-3 transition-transform group-open:rotate-180" viewBox="0 0 13 8" fill="none">
+                <path d="M6.278 7.058a1.46 1.46 0 0 1-.438-.048 1.22 1.22 0 0 1-.199-.14L.216 1.246c-.25-.25-.25-.637 0-.887s.637-.25.887 0l5.188 5.187L11.466.37c.25-.25.637-.25.887 0s.25.638 0 .888L6.728 6.883a.66.66 0 0 1-.45.175Z" fill="currentColor" />
+              </svg>
+            </summary>
+            <div class="absolute left-0 top-full mt-5 grid w-[400px] grid-cols-2 grid-rows-7 grid-flow-col gap-0 rounded-[20px] border border-border bg-white p-4 text-heading shadow-soft">
+              {pageLinks.map((item) => (
+                <a class="rounded-xl px-3 py-1 text-[17px] hover:bg-surface" href={item.href}>{item.label}</a>
+              ))}
+            </div>
+          </details>
+        </nav>
+
+        <!-- Desktop CTA -->
+        <div class="hidden items-center gap-6 lg:flex">
+          <a href="/contact/" class="text-[18px] font-medium text-heading hover:text-primary">Contact Us</a>
+          <Button href="/contact/" label="Get Started" variant="primary" />
+        </div>
+
+        <!-- Mobile hamburger -->
+        <button
+          id="mobile-menu-btn"
+          aria-label="Open menu"
+          aria-expanded="false"
+          class="flex h-10 w-10 flex-col items-center justify-center gap-[6px] rounded-lg lg:hidden"
+        >
+          <span class="hamburger-line block h-[2px] w-6 rounded-full bg-heading transition-all duration-300"></span>
+          <span class="hamburger-line block h-[2px] w-6 rounded-full bg-heading transition-all duration-300"></span>
+          <span class="hamburger-line block h-[2px] w-6 rounded-full bg-heading transition-all duration-300"></span>
+        </button>
+      </div>
+    </div>
+  )}
+</header>
+
+<!-- ── Mobile menu overlay ──────────────────────────────────────── -->
+<div
+  id="mobile-overlay"
+  class="fixed inset-0 z-40 bg-black/40 opacity-0 invisible backdrop-blur-sm transition-all duration-300 lg:hidden"
+  aria-hidden="true"
+></div>
+
+<!-- ── Mobile menu panel (slide from right) ─────────────────────── -->
+<div
+  id="mobile-menu"
+  role="dialog"
+  aria-modal="true"
+  class:list={[
+    "fixed inset-y-0 right-0 z-50 flex w-[320px] max-w-[85vw] translate-x-full flex-col overflow-y-auto shadow-2xl transition-transform duration-300 ease-in-out lg:hidden",
+    dark ? "bg-[#1a0d2e]" : "bg-white"
+  ]}
+  aria-label="Navigation menu"
+>
+  <!-- Panel header -->
+  <div class:list={[
+    "flex shrink-0 items-center justify-between border-b px-6 py-5",
+    dark ? "border-white/10" : "border-border"
+  ]}>
+    <a href="/" class="flex items-center">
+      <Image src={dark ? logo.light : logo.dark} alt="Influvo logo" class="h-auto w-[120px]" />
+    </a>
+    <button
+      id="mobile-menu-close"
+      aria-label="Close menu"
+      class:list={[
+        "flex h-9 w-9 items-center justify-center rounded-full transition-colors",
+        dark ? "bg-white/10 text-white hover:bg-white/20" : "bg-surface text-heading hover:bg-border"
+      ]}
+    >
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Nav links -->
+  <nav class="flex-1 px-4 py-5 space-y-1">
+
+    <!-- Home accordion -->
+    <div class:list={[
+      "mobile-accordion overflow-hidden rounded-xl transition-colors duration-200",
+      dark ? "[&.is-open]:bg-white/5" : "[&.is-open]:bg-surface"
+    ]}>
+      <button
+        type="button"
+        class:list={[
+          "mobile-accordion-trigger flex w-full cursor-pointer items-center justify-between rounded-xl px-3 py-3 text-[17px] font-semibold transition-colors",
+          dark ? "text-white hover:bg-white/10" : "text-heading hover:bg-surface"
+        ]}
+        aria-expanded="false"
+      >
+        Home
+        <svg class="mobile-accordion-icon h-4 w-4 shrink-0 transition-transform duration-300" viewBox="0 0 13 8" fill="none">
+          <path d="M6.278 7.058a1.46 1.46 0 0 1-.438-.048 1.22 1.22 0 0 1-.199-.14L.216 1.246c-.25-.25-.25-.637 0-.887s.637-.25.887 0l5.188 5.187L11.466.37c.25-.25.637-.25.887 0s.25.638 0 .888L6.728 6.883a.66.66 0 0 1-.45.175Z" fill="currentColor" />
+        </svg>
+      </button>
+      <div class="mobile-accordion-panel grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-in-out">
+        <div class="min-h-0 overflow-hidden">
+          <div class="space-y-1 px-2 pb-2 pt-1">
+            {homeLinks.map((item) => (
+              <a
+                href={item.href}
+                class:list={[
+                  "block rounded-lg px-3 py-2.5 text-[15px] transition-colors",
+                  dark ? "text-white/70 hover:bg-white/10 hover:text-white" : "text-body hover:bg-white hover:text-heading"
+                ]}
+              >{item.label}</a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Regular nav links -->
+    {navLinks.map((item) => {
+      const isActive = pathname.startsWith(item.href);
+      return (
+        <a
+          href={item.href}
+          aria-current={isActive ? "page" : undefined}
+          class:list={[
+            "relative flex items-center rounded-xl px-3 py-3 text-[17px] font-semibold transition-colors",
+            isActive
+              ? (dark ? "bg-white/10 text-white" : "bg-surface text-primary")
+              : (dark ? "text-white hover:bg-white/10" : "text-heading hover:bg-surface")
+          ]}
+        >
+          {isActive && <span class="absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-full bg-primary" aria-hidden="true" />}
+          {item.label}
+        </a>
+      );
+    })}
+
+    <!-- Pages accordion -->
+    <div class:list={[
+      "mobile-accordion overflow-hidden rounded-xl transition-colors duration-200",
+      dark ? "[&.is-open]:bg-white/5" : "[&.is-open]:bg-surface"
+    ]}>
+      <button
+        type="button"
+        class:list={[
+          "mobile-accordion-trigger flex w-full cursor-pointer items-center justify-between rounded-xl px-3 py-3 text-[17px] font-semibold transition-colors",
+          dark ? "text-white hover:bg-white/10" : "text-heading hover:bg-surface"
+        ]}
+        aria-expanded="false"
+      >
+        Pages
+        <svg class="mobile-accordion-icon h-4 w-4 shrink-0 transition-transform duration-300" viewBox="0 0 13 8" fill="none">
+          <path d="M6.278 7.058a1.46 1.46 0 0 1-.438-.048 1.22 1.22 0 0 1-.199-.14L.216 1.246c-.25-.25-.25-.637 0-.887s.637-.25.887 0l5.188 5.187L11.466.37c.25-.25.637-.25.887 0s.25.638 0 .888L6.728 6.883a.66.66 0 0 1-.45.175Z" fill="currentColor" />
+        </svg>
+      </button>
+      <div class="mobile-accordion-panel grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-in-out">
+        <div class="min-h-0 overflow-hidden">
+          <div class="grid grid-cols-2 gap-0.5 px-2 pb-2 pt-1">
+            {pageLinks.map((item) => (
+              <a
+                href={item.href}
+                class:list={[
+                  "rounded-lg px-3 py-2.5 text-[14px] transition-colors",
+                  dark ? "text-white/70 hover:bg-white/10 hover:text-white" : "text-body hover:bg-white hover:text-heading"
+                ]}
+              >{item.label}</a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Bottom CTA -->
+  <div class:list={[
+    "shrink-0 border-t px-6 py-6 space-y-3",
+    dark ? "border-white/10" : "border-border"
+  ]}>
+    <a
+      href="/contact/"
+      class:list={[
+        "block text-center text-[17px] font-semibold py-3",
+        dark ? "text-white/80 hover:text-white" : "text-heading hover:text-primary"
+      ]}
+    >Contact Us</a>
+    <Button href="/contact/" label="Get Started" variant={dark ? "light" : "primary"} class="w-full justify-center" />
+  </div>
+</div>
+
+<script>
+  const btn      = document.getElementById("mobile-menu-btn")!;
+  const closeBtn = document.getElementById("mobile-menu-close")!;
+  const menu     = document.getElementById("mobile-menu")!;
+  const overlay  = document.getElementById("mobile-overlay")!;
+
+  function openMenu() {
+    menu.classList.remove("translate-x-full");
+    overlay.classList.remove("opacity-0", "invisible");
+    overlay.classList.add("opacity-100", "visible");
+    btn.setAttribute("aria-expanded", "true");
+    document.body.style.overflow = "hidden";
+
+    // Animate hamburger → X
+    const lines = btn.querySelectorAll<HTMLElement>(".hamburger-line");
+    lines[0].style.transform = "translateY(8px) rotate(45deg)";
+    lines[1].style.opacity   = "0";
+    lines[2].style.transform = "translateY(-8px) rotate(-45deg)";
+  }
+
+  function closeMenu() {
+    menu.classList.add("translate-x-full");
+    overlay.classList.add("opacity-0", "invisible");
+    overlay.classList.remove("opacity-100", "visible");
+    btn.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
+
+    // Revert X → hamburger
+    const lines = btn.querySelectorAll<HTMLElement>(".hamburger-line");
+    lines[0].style.transform = "";
+    lines[1].style.opacity   = "";
+    lines[2].style.transform = "";
+
+    // Collapse any open accordions for next time the menu opens
+    menu.querySelectorAll<HTMLElement>(".mobile-accordion").forEach((accordion) => {
+      setAccordionOpen(accordion, false);
+    });
+  }
+
+  btn.addEventListener("click", () => {
+    const isOpen = btn.getAttribute("aria-expanded") === "true";
+    isOpen ? closeMenu() : openMenu();
+  });
+
+  closeBtn.addEventListener("click", closeMenu);
+  overlay.addEventListener("click", closeMenu);
+
+  // Close on Escape
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeMenu();
+  });
+
+  // Close when a nav link is clicked
+  menu.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", closeMenu);
+  });
+
+  // Accordion sections (Home / Pages) — accordion-style, only one open at a time
+  const accordions = menu.querySelectorAll<HTMLElement>(".mobile-accordion");
+
+  function setAccordionOpen(accordion: HTMLElement, open: boolean) {
+    const trigger = accordion.querySelector<HTMLElement>(".mobile-accordion-trigger")!;
+    const panel   = accordion.querySelector<HTMLElement>(".mobile-accordion-panel")!;
+    const icon    = accordion.querySelector<HTMLElement>(".mobile-accordion-icon")!;
+    accordion.classList.toggle("is-open", open);
+    trigger.setAttribute("aria-expanded", String(open));
+    panel.style.gridTemplateRows = open ? "1fr" : "0fr";
+    icon.style.transform = open ? "rotate(180deg)" : "";
+  }
+
+  accordions.forEach((accordion) => {
+    const trigger = accordion.querySelector<HTMLElement>(".mobile-accordion-trigger")!;
+    trigger.addEventListener("click", () => {
+      const willOpen = trigger.getAttribute("aria-expanded") !== "true";
+      accordions.forEach((other) => setAccordionOpen(other, other === accordion && willOpen));
+    });
+  });
+</script>

@@ -1,0 +1,36 @@
+---
+import AuthLayout from "@/layouts/AuthLayout.astro";
+import notFoundImage from "@/assets/images/not-found-image.png";
+import { Image } from "astro:assets";
+---
+
+<AuthLayout title="Page Not Found | Influvo Astro Theme">
+  <div class="flex h-screen flex-col">
+
+    {/* Top section — surface bg with 404 illustration */}
+    <div class="flex items-center justify-center border-b border-border bg-surface" style="height: 65vh">
+      <Image
+        src={notFoundImage}
+        alt="404 Not Found"
+        class="h-full w-auto max-w-full object-contain py-10"
+      />
+    </div>
+
+    {/* Bottom section — white, text + button */}
+    <div class="flex flex-1 flex-col items-center justify-center bg-white px-6 text-center">
+      <h2 class="text-[32px] font-semibold text-heading md:text-[40px]">Oops! Something Went Wrong.</h2>
+      <p class="mt-4 mb-8 text-[18px] text-body">We couldn't find what you're looking for.</p>
+      <a
+        href="/"
+        class="flex items-center gap-3 bg-primary px-7 py-3 text-[18px] font-medium text-white transition-colors duration-300 hover:bg-heading"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.6569 12H6.34315" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M10.9395 7.40381L6.34326 12L10.9395 16.5962" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Back Home
+      </a>
+    </div>
+
+  </div>
+</AuthLayout>

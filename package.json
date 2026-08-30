@@ -1,0 +1,27 @@
+{
+  "name": "theme-personal-1",
+  "version": "1.1.1",
+  "private": true,
+  "type": "module",
+  "description": "Private Social Power showroom preview",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build && node scripts/fix-image-urls.mjs",
+    "preview": "astro preview",
+    "check": "astro check",
+    "release:patch": "npm version patch -m \"chore: release %s\" && git push && git push --tags",
+    "release:minor": "npm version minor -m \"chore: release %s\" && git push && git push --tags",
+    "release:major": "npm version major -m \"chore: release %s\" && git push && git push --tags"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
+    "@tailwindcss/vite": "^4.2.2",
+    "astro": "^7.1.3",
+    "tailwindcss": "^4.2.2"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,79 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import HeroSection from "@/components/HeroSection.astro";
+import LogoMarquee from "@/components/LogoMarquee.astro";
+import TestimonialSection from "@/components/TestimonialSection.astro";
+import BlogGrid from "@/components/BlogGrid.astro";
+import HomeOneServices from "@/components/HomeOneServices.astro";
+import HomeOneAbout from "@/components/HomeOneAbout.astro";
+import HomeOneClientsMetrics from "@/components/HomeOneClientsMetrics.astro";
+import InfluencerCategoryTabs from "@/components/InfluencerCategoryTabs.astro";
+import { blogPosts, homeOne, homeOneClients, influencerCategories, metrics, serviceItems, testimonials, sharedStats } from "@/data/content";
+import { marqueeLogos } from "@/data/site";
+---
+
+<BaseLayout
+  title="Home One | Influvo Astro Theme"
+  description="Home one of the Influvo Astro marketplace theme."
+  headerTheme="dark"
+  headerDarkCtaStyle="nav-dark"
+>
+  <HeroSection
+    title={homeOne.hero.title}
+    highlight={homeOne.hero.highlight}
+    description={homeOne.hero.description}
+    image={homeOne.hero.image}
+    theme="dark"
+    layout="centered"
+    videoId="TUvpL_Hx0is"
+    videoStart={7}
+  />
+
+  <HomeOneServices
+    title={homeOne.services.title}
+    highlight={homeOne.services.highlight}
+    ctaHref="/services/"
+    ctaLabel="Explore More"
+    items={serviceItems}
+  />
+
+  <HomeOneAbout
+    title={homeOne.about.title}
+    highlight={homeOne.about.highlight}
+    avatars={sharedStats.avatars}
+    statValue={homeOne.about.statValue}
+    statLabel={homeOne.about.statLabel}
+    text={homeOne.about.text}
+    ctaHref="/about/"
+    ctaLabel="Read Details"
+    videoImage={homeOne.about.videoImage}
+    cardText={homeOne.about.cardText}
+    cardStat={homeOne.about.cardStat}
+    cardStatLabel={homeOne.about.cardStatLabel}
+    thumbnail={homeOne.about.videoThumbnail}
+    bgPattern={homeOne.about.bgPattern}
+    videoId="TUvpL_Hx0is"
+  />
+
+  <LogoMarquee logos={marqueeLogos} />
+
+  <HomeOneClientsMetrics
+    title={homeOneClients.title}
+    highlight={homeOneClients.highlight}
+    bgImage={homeOneClients.bgImage}
+    shapeImage={homeOneClients.shapeImage}
+    metrics={metrics}
+    cta={homeOneClients.cta}
+  />
+
+  <InfluencerCategoryTabs
+    title="Influencers From Various Categories"
+    highlight="Various"
+    ctaHref="/influencers/"
+    ctaLabel="More Details"
+    categories={influencerCategories}
+  />
+
+  <TestimonialSection title="Feedback That" highlight="Fuels Our" titleSuffix=" Passion" items={testimonials} showAllQuotes={true} />
+  <BlogGrid title="Stay Updated with Expert Advice, News, and Stories" posts={blogPosts.slice(0, 2)} compact={true} bgClass="bg-white" />
+</BaseLayout>

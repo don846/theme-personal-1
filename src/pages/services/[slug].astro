@@ -1,0 +1,206 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { serviceItems } from "@/data/content";
+import ctaPattern from "@/assets/images/Service-Cta-Pattern.png";
+import chatIcon from "@/assets/images/chat-icon.svg";
+
+export function getStaticPaths() {
+  return serviceItems.map((item) => ({ params: { slug: item.slug }, props: { service: item } }));
+}
+
+const { service } = Astro.props;
+
+const faqAnswer = "Influencer marketing is a strategy that involves partnering with influencers — people with large followings on social media or other platforms — to promote products, services, or brands. Influencers create content that resonates with their audience, which helps brands reach a more targeted and engaged demographic.";
+---
+
+<BaseLayout title={`${service.title} | Influvo Astro Theme`} description={service.excerpt}>
+
+  {/* Post details hero */}
+  <section class="bg-white py-[60px]">
+    <div class="container">
+      <div class="mb-8 flex items-center gap-4 text-[18px]" data-animate="fade-up">
+        <a href="/" class="font-medium text-primary">Home</a>
+        <span class="h-px w-14 bg-heading/30"></span>
+        <span>Service details</span>
+      </div>
+      <h1 class="text-[26px] font-semibold leading-[1.15] md:text-[40px]" data-animate="fade-up" style="--delay: 0.1s">{service.title}</h1>
+    </div>
+  </section>
+
+  {/* Service details section */}
+  <section class="pb-[60px] md:pb-[80px]">
+    <div class="container">
+      <div class="flex flex-col gap-10 lg:flex-row">
+
+        {/* Main content block */}
+        <div class="w-full lg:w-[66%]">
+
+          {/* Main image */}
+          <div class="mb-8 xl:mb-16" data-animate="fade-blur">
+            <Image src={service.image} alt={service.title} class="h-auto w-full object-cover" />
+          </div>
+
+          {/* Rich text content */}
+          <div class="mb-10 xl:mb-16">
+            <h2 class="text-[24px] font-semibold leading-[1.3] md:text-[40px] xl:text-[56px]" data-animate="fade-up">{service.introTitle}</h2>
+            <p class="mt-4 text-[17px] md:text-[22px] leading-[1.65]" data-animate="fade-up" style="--delay: 0.1s">{service.intro}</p>
+
+            <h3 class="mt-6 text-[20px] font-semibold leading-[1.3] md:text-[28px]" data-animate="fade-up" style="--delay: 0.15s">Why Choose Our {service.title} Service?</h3>
+            <ul class="mt-4 flex flex-col gap-4">
+              {service.bullets.map((item, i) => (
+                <li class="flex items-start gap-4" data-animate="fade-up" style={`--delay: ${0.2 + i * 0.08}s`}>
+                  <span class="mt-[3px] shrink-0">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="0.571429" y="0.571429" width="22.8571" height="22.8571" rx="11.4286" stroke="#7D30E2" stroke-width="1.14286"/>
+                      <circle cx="11.9998" cy="12.0001" r="5.09554" fill="#7D30E2"/>
+                    </svg>
+                  </span>
+                  <span class="text-[17px] md:text-[22px] leading-[1.65]">{item}</span>
+                </li>
+              ))}
+            </ul>
+
+            {/* Secondary image */}
+            <figure class="mt-8 w-full xl:mt-12">
+              <Image src={service.secondaryImage} alt="Service details" class="h-auto w-full object-cover" />
+            </figure>
+
+            <p class="mt-8 text-[17px] md:text-[22px] leading-[1.65]">Contact us today to take your influencer marketing to the next level with innovative and engaging content ideas that amplify your brand.</p>
+          </div>
+
+          {/* FAQ section */}
+          <div>
+            <h2 class="mb-8 text-[24px] font-semibold leading-[1.3] md:text-[40px]" data-animate="fade-up">Questions? You Need Answer</h2>
+            <div class="flex flex-col gap-6">
+              {service.faq.map((question, i) => (
+                <div class="faq-item w-full" data-animate="fade-up" style={`--delay: ${0.1 + i * 0.08}s`}>
+                  <div class="faq-header flex cursor-pointer items-center justify-between gap-4 border border-border bg-surface px-5 py-[10px]">
+                    <p class="text-[17px] font-semibold leading-[1.4] text-heading md:text-[22px]">{question}</p>
+                    <span class="faq-icon shrink-0 transition-transform duration-300">
+                      <svg width="22" height="13" viewBox="0 0 22 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 1.00008L11 11L21 1" stroke="currentColor" stroke-width="2" stroke-miterlimit="16"/>
+                      </svg>
+                    </span>
+                  </div>
+                  <div class="faq-body overflow-hidden" style="height:0">
+                    <p class="px-6 py-6 text-[20px] leading-[1.6]">{faqAnswer}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Sidebar */}
+        <div class="flex w-full flex-col gap-8 lg:w-[33%]">
+
+          {/* Services list */}
+          <div class="border border-[#eaeaea] bg-[#f9f9f9] p-6 xl:p-8" data-animate="fade-up">
+            <p class="text-[22px] font-semibold">Services</p>
+            <div class="mt-6 flex flex-col gap-4">
+              {serviceItems.map((item) => (
+                <a
+                  href={`/services/${item.slug}/`}
+                  class={`block px-6 py-4 text-[20px] transition-colors duration-300 hover:bg-primary hover:text-white ${item.slug === service.slug ? "bg-primary text-white" : "bg-white text-heading"}`}
+                >
+                  {item.title}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Contact form */}
+          <div class="border border-[#eaeaea] bg-[#f9f9f9] p-6 xl:p-8" data-animate="fade-up" style="--delay: 0.1s">
+            <p class="text-[22px] font-semibold">Reach Out to Us</p>
+            <form class="mt-8 flex flex-col gap-6">
+              <input
+                class="h-[60px] w-full bg-white px-8 text-[20px] text-heading outline-none focus:border focus:border-primary"
+                placeholder="Name"
+                type="text"
+                name="name"
+              />
+              <input
+                class="h-[60px] w-full bg-white px-8 text-[20px] text-heading outline-none focus:border focus:border-primary"
+                placeholder="Email"
+                type="email"
+                name="email"
+              />
+              <textarea
+                class="h-[186px] w-full bg-white px-8 py-5 text-[20px] text-heading outline-none focus:border focus:border-primary"
+                placeholder="Example Text"
+                name="message"
+              ></textarea>
+              <button
+                type="button"
+                class="flex h-[60px] w-full items-center justify-center bg-primary text-[18px] font-medium text-white transition-colors duration-300 hover:bg-heading"
+              >
+                Send Message
+              </button>
+            </form>
+          </div>
+
+          {/* CTA block */}
+          <div
+            class="flex flex-col items-center p-8 text-white"
+            data-animate="fade-up"
+            style={`--delay: 0.2s; background-color: #080512; background-image: url(${ctaPattern.src}); background-position: right; background-repeat: no-repeat; background-size: cover;`}
+          >
+            <Image src={chatIcon} alt="Chat icon" width={80} height={80} />
+            <p class="mt-6 w-full border-b border-[#9e9e9e] pb-8 text-center text-[22px] font-semibold text-white">
+              Do you need any help?
+            </p>
+            <a
+              href="tel:+15551430000"
+              class="mt-8 text-[28px] font-semibold text-white hover:underline"
+            >
+              +1 (555) 143-0000
+            </a>
+            <a
+              href="mailto:support@example.com"
+              class="mt-2 text-[#b1b1b1] transition-colors duration-300 hover:text-white"
+            >
+              support@example.com
+            </a>
+            <a
+              href="/contact/"
+              class="mt-8 flex h-[60px] w-full items-center justify-center bg-primary text-[18px] font-medium text-white transition-colors duration-300 hover:bg-white hover:text-heading"
+            >
+              Contact us
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  // FAQ accordion
+  const faqItems = document.querySelectorAll(".faq-item");
+
+  faqItems.forEach((item) => {
+    const header = item.querySelector(".faq-header");
+    const body = item.querySelector(".faq-body") as HTMLElement;
+    const icon = item.querySelector(".faq-icon") as HTMLElement;
+
+    header?.addEventListener("click", () => {
+      const isOpen = body.style.height !== "0px" && body.style.height !== "0";
+
+      // Close all
+      faqItems.forEach((other) => {
+        const otherBody = other.querySelector(".faq-body") as HTMLElement;
+        const otherIcon = other.querySelector(".faq-icon") as HTMLElement;
+        otherBody.style.height = "0";
+        otherIcon.style.transform = "rotate(0deg)";
+      });
+
+      // Open clicked if it was closed
+      if (!isOpen) {
+        body.style.height = body.scrollHeight + "px";
+        icon.style.transform = "rotate(180deg)";
+      }
+    });
+  });
+</script>

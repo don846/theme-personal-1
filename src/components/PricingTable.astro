@@ -1,0 +1,99 @@
+---
+export interface Props {
+  heading: string;
+  subheading: string;
+  ctaHref: string;
+  ctaLabel: string;
+  plans: Array<{ tier: string; price: string; note: string }>;
+  features: Array<{ name: string; values: boolean[] }>;
+}
+
+const { heading, subheading, ctaHref, ctaLabel, plans, features } = Astro.props;
+const gridCols = `2fr ${plans.map(() => "1fr").join(" ")}`;
+---
+
+<section class="bg-surface">
+  <div class="container section-space">
+
+    {/* Section heading */}
+    <div class="text-center">
+      <h2 class="section-title" data-animate="fade-up">{heading}</h2>
+      <p class="mt-4 text-[20px] text-body" data-animate="fade-up" style="--delay: 0.1s">{subheading}</p>
+    </div>
+
+    <div class="mt-14 overflow-x-auto" data-animate="fade-up" style="--delay: 0.2s">
+      <div class="min-w-[700px]">
+
+        {/* Plan price header boxes — aligned to the plan columns */}
+        <div class="grid gap-px" style={`grid-template-columns: ${gridCols}`}>
+          <div></div>
+          {plans.map((plan) => (
+            <div class="border border-[#dadada] bg-white px-4 py-5 text-center">
+              <p class="text-[13px] uppercase tracking-wide text-[#9e9e9e]">{plan.tier}</p>
+              <p class="mt-1 text-[28px] font-semibold text-heading">{plan.price}</p>
+              <p class="mt-1 text-[13px] text-body">{plan.note}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Feature table */}
+        <div class="mt-px">
+
+          {/* Column header row */}
+          <div class="grid" style={`grid-template-columns: ${gridCols}`}>
+            <div class="bg-[#f5f5f5] px-6 py-4">
+              <p class="text-[13px] font-medium uppercase tracking-wide text-body">Features</p>
+            </div>
+            {plans.map((plan) => (
+              <div class="bg-[#f5f5f5] px-4 py-4 text-center">
+                <p class="text-[13px] font-medium uppercase tracking-wide text-body">{plan.tier}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Feature rows */}
+          {features.map((feature, i) => (
+            <div class="grid border-b border-[#eee]" style={`grid-template-columns: ${gridCols}; background-color: ${i % 2 !== 0 ? "#faf9fc" : "#fff"}`}>
+              <div class="px-6 py-5">
+                <p class="text-[18px] text-heading">{feature.name}</p>
+              </div>
+              {feature.values.map((has) => (
+                <div class="flex items-center justify-center px-4 py-5">
+                  {has ? (
+                    <svg width="28" height="27" viewBox="0 0 28 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="13.625" cy="13.125" r="10.125" stroke="#17B26A" stroke-width="1.5"/>
+                      <path d="M17.5 11L13.902 15.3175C13.2465 16.1042 12.9187 16.4976 12.4781 16.5176C12.0375 16.5375 11.6755 16.1755 10.9514 15.4514L9.5 14" stroke="#17B26A" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                  ) : (
+                    <span class="text-[20px] text-[#b0b0b0]">—</span>
+                  )}
+                </div>
+              ))}
+            </div>
+          ))}
+
+          {/* Buy Now row */}
+          <div class="grid border-b border-[#eee] bg-white" style={`grid-template-columns: ${gridCols}`}>
+            <div></div>
+            {plans.map(() => (
+              <div class="flex items-center justify-center px-4 py-6">
+                <a
+                  href={ctaHref}
+                  class="flex items-center gap-2 bg-primary px-5 py-3 text-[15px] font-medium text-white transition-colors duration-300 hover:bg-heading"
+                >
+                  <span>{ctaLabel}</span>
+                  <svg width="20" height="20" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7.8545 15H22.1455" stroke="currentColor" stroke-width="1.68" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M16.3398 9.19427L22.1456 15L16.3398 20.8057" stroke="currentColor" stroke-width="1.68" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </a>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

@@ -1,0 +1,36 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHero from "@/components/PageHero.astro";
+import AboutIntro from "@/components/AboutIntro.astro";
+import AboutHistory from "@/components/AboutHistory.astro";
+import LeadershipTeam from "@/components/LeadershipTeam.astro";
+import { aboutPage, teamMembers } from "@/data/content";
+---
+
+<BaseLayout title="About Us | Influvo" description="Learn the story behind Influvo — a full-service influencer marketing agency founded in 2009, connecting global brands with top-tier creators across every platform.">
+  <PageHero {...aboutPage.hero} breadcrumb="About Us" bgClass="bg-white" />
+
+  <AboutIntro
+    eyebrow={aboutPage.intro.eyebrow}
+    title={aboutPage.intro.title}
+    highlight={aboutPage.intro.highlight}
+    avatars={aboutPage.intro.avatars}
+    statValue={aboutPage.intro.statValue}
+    statLabel={aboutPage.intro.statLabel}
+    paragraphs={aboutPage.intro.paragraphs}
+    videoImage={aboutPage.hero.image}
+    videoId={aboutPage.intro.videoId}
+  />
+
+  <AboutHistory
+    eyebrow={aboutPage.historySection.eyebrow}
+    title={aboutPage.historySection.title}
+    items={aboutPage.history}
+  />
+
+  <LeadershipTeam
+    title={aboutPage.leadership.title}
+    description={aboutPage.leadership.description}
+    members={teamMembers}
+  />
+</BaseLayout>

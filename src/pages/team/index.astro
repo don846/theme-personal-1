@@ -1,0 +1,12 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHero from "@/components/PageHero.astro";
+import TeamGrid from "@/components/TeamGrid.astro";
+import { pageHeroes, teamMembers, teamPage } from "@/data/content";
+---
+
+<BaseLayout title="Team | Influvo" description="Meet the creative strategists, digital marketers, and data analysts behind Influvo — the people dedicated to making your brand story shine.">
+  <PageHero {...pageHeroes.team} />
+
+  <TeamGrid heading={teamPage.heading} description={teamPage.description} members={teamMembers} />
+</BaseLayout>

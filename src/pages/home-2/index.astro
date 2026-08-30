@@ -1,0 +1,62 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import HeroSection from "@/components/HeroSection.astro";
+import LogoMarquee from "@/components/LogoMarquee.astro";
+import TestimonialSection from "@/components/TestimonialSection.astro";
+import BlogGrid from "@/components/BlogGrid.astro";
+import HomeTwoAbout from "@/components/HomeTwoAbout.astro";
+import HomeTwoServices from "@/components/HomeTwoServices.astro";
+import HomeTwoClientsMetrics from "@/components/HomeTwoClientsMetrics.astro";
+import HomeTwoInfluencerTabs from "@/components/HomeTwoInfluencerTabs.astro";
+import { blogPosts, homeOne, homeTwo, homeTwoClients, influencerCategories, metrics, serviceItems, sharedStats, testimonials } from "@/data/content";
+import { marqueeLogos } from "@/data/site";
+---
+
+<BaseLayout title="Home Two | Influvo Astro Theme" description="Influvo helps ambitious brands grow through authentic creator partnerships — strategic, data-driven influencer marketing that converts audiences into customers.">
+  <HeroSection
+    title={homeTwo.hero.title}
+    highlight={homeTwo.hero.highlight}
+    description={homeTwo.hero.description}
+    image={homeTwo.hero.image}
+    theme="light"
+    layout="centered"
+    videoId="TUvpL_Hx0is"
+  />
+
+  <HomeTwoAbout
+    eyebrow={homeTwo.about.eyebrow}
+    title={homeTwo.about.title}
+    highlight={homeTwo.about.highlight}
+    avatars={sharedStats.avatars}
+    statValue={homeTwo.about.statValue}
+    statLabel={homeTwo.about.statLabel}
+    text={homeOne.about.text}
+    ctaHref="/about/"
+    ctaLabel="Read Details"
+    videoImage={homeTwo.about.videoImage}
+    videoId={homeTwo.about.videoId}
+  />
+
+  <HomeTwoServices
+    eyebrow={homeTwo.services.eyebrow}
+    title={homeTwo.services.title}
+    items={serviceItems}
+  />
+
+  <LogoMarquee logos={marqueeLogos} />
+
+  <HomeTwoClientsMetrics
+    title={homeTwoClients.title}
+    highlight={homeTwoClients.highlight}
+    icon={homeTwoClients.icon}
+    metrics={metrics}
+  />
+
+  <HomeTwoInfluencerTabs
+    title="Influencers From Various Categories"
+    categories={influencerCategories}
+  />
+
+  <TestimonialSection title="Feedback That" highlight="Fuels Our Passion" items={testimonials} />
+  <BlogGrid title="Stay Updated with Expert Advice, News, and Stories" posts={blogPosts.slice(0, 2)} compact={true} bgClass="bg-white" />
+</BaseLayout>

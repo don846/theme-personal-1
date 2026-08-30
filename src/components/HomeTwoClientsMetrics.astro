@@ -1,0 +1,32 @@
+---
+import { Image } from "astro:assets";
+
+export interface Props {
+  title: string;
+  highlight: string;
+  icon: ImageMetadata;
+  metrics: Array<{ title: string; value: string; color: string }>;
+}
+
+const { title, highlight, icon, metrics } = Astro.props;
+const [beforeHighlight, afterHighlight] = title.split(highlight);
+---
+
+<section class="bg-white">
+  <div class="container section-space">
+    <div class="mb-10 md:mb-14" data-animate="fade-up">
+      <Image src={icon} alt="" aria-hidden="true" class="mb-6 w-[60px] md:w-[80px]" />
+      <h2 class="section-title max-w-full xl:max-w-[70%]">
+        {beforeHighlight}<span class="text-secondary">{highlight}</span>{afterHighlight}
+      </h2>
+    </div>
+    <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+      {metrics.map((item, i) => (
+        <div class={`${item.color} flex h-[220px] flex-col justify-between p-5 text-heading md:h-[275px]`} data-animate="scale-y" style={`--delay: ${i * 0.1}s`}>
+          <h3 class="text-[22px] font-medium leading-[1.3] md:text-[30px]">{item.title}</h3>
+          <p class="ml-auto text-[40px] font-semibold leading-none md:text-[56px]">{item.value}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

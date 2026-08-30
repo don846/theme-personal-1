@@ -1,0 +1,131 @@
+---
+import { Image } from "astro:assets";
+
+export interface Props {
+  title: string;
+  categories: Array<{
+    key: string;
+    label: string;
+    imageLeft: ImageMetadata;
+    imageRight: ImageMetadata;
+    title: string;
+    text: string;
+    stats: Array<{ label: string; value: string }>;
+  }>;
+}
+
+const { title, categories } = Astro.props;
+---
+
+<section class="bg-surface">
+  <div class="container section-space">
+    <h2 class="section-title mb-10 md:mb-14" data-animate="fade-up">{title}</h2>
+
+    {/* Tab buttons — horizontal on mobile, vertical on lg */}
+    <div class="flex flex-wrap gap-3 lg:hidden" data-animate="fade-up" style="--delay: 0.1s">
+      {categories.map((cat, i) => (
+        <button
+          class:list={[
+            "inf-tab-btn rounded-xl border border-border px-5 py-2.5 text-[15px] font-semibold transition-colors",
+            i === 0 ? "bg-primary text-white hover:bg-primary hover:text-white" : "bg-white text-heading hover:bg-primary hover:text-white"
+          ]}
+          data-tab={cat.key}
+          type="button"
+        >
+          {cat.label}
+        </button>
+      ))}
+    </div>
+
+    <div class="mt-8 flex items-start lg:mt-0" data-animate="fade-up" style="--delay: 0.15s">
+      {/* Vertical tab menu — lg+ only */}
+      <div class="hidden lg:block lg:w-[28%] lg:shrink-0 lg:pr-10">
+        {categories.map((cat, i) => (
+          <button
+            class:list={[
+              "inf-tab-btn mb-4 w-full border border-border py-4 text-center text-[18px] font-medium transition-colors last:mb-0 xl:py-5 xl:text-[22px]",
+              i === 0 ? "bg-primary text-white hover:bg-primary hover:text-white" : "bg-white text-heading hover:bg-primary hover:text-white"
+            ]}
+            data-tab={cat.key}
+            type="button"
+          >
+            {cat.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Content panels */}
+      <div class="min-w-0 flex-1">
+        {categories.map((cat, i) => (
+          <div
+            class:list={["inf-tab-panel", i === 0 ? "block" : "hidden"]}
+            data-panel={cat.key}
+          >
+            <div class="mb-8 grid grid-cols-2 gap-3 md:gap-4">
+              <div class="overflow-hidden rounded-[8px]">
+                <Image src={cat.imageLeft} alt={`${cat.label} influencer`} class="h-full w-full object-cover" />
+              </div>
+              <div class="overflow-hidden rounded-[8px]">
+                <Image src={cat.imageRight} alt={`${cat.label} influencer`} class="h-full w-full object-cover" />
+              </div>
+            </div>
+            <div>
+              <h3 class="text-[24px] font-semibold leading-[1.4] md:text-[32px]">{cat.title}</h3>
+              <p class="mb-8 mt-4 text-[17px] leading-[1.65] md:text-[18px]">{cat.text}</p>
+              <div class="space-y-4">
+                {cat.stats.map((stat, si) => (
+                  <div class="border-t border-border pt-4">
+                    {/* Mobile stacked */}
+                    <div class="md:hidden">
+                      <p class="text-[28px] font-semibold leading-none">{stat.value}</p>
+                      <p class="mt-1 text-[15px] text-body">{stat.label}</p>
+                    </div>
+                    {/* md+ side by side */}
+                    <div class="hidden md:flex md:items-start md:gap-8">
+                      <div class="w-[180px] shrink-0 xl:w-[220px]">
+                        <p class="text-[30px] font-semibold leading-none xl:text-[36px]">{stat.value}</p>
+                        <p class="mt-2 text-[16px] text-body xl:text-[18px]">{stat.label}</p>
+                      </div>
+                      <p class="text-[16px] leading-[1.65] text-body xl:text-[18px]">
+                        {si === 0
+                          ? "Concerns greatest Margaret him absolute entrance nay. Door neat week do find past he. Be no surprise he honored indulged."
+                          : "Extremity sweetness difficult behavior he of. On disposal of as landlord horrible. Afraid at highly months do things on at."}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Tab switching
+  const infBtns = document.querySelectorAll<HTMLButtonElement>('.inf-tab-btn');
+  const infPanels = document.querySelectorAll<HTMLElement>('.inf-tab-panel');
+
+  infBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const key = (btn as HTMLElement).dataset.tab!;
+      infBtns.forEach(b => {
+        b.classList.remove('bg-primary', 'bg-surface', 'text-white');
+        b.classList.add('bg-white', 'text-heading');
+      });
+      btn.classList.remove('bg-white', 'bg-surface', 'text-heading');
+      btn.classList.add('bg-primary', 'text-white');
+      infPanels.forEach(p => {
+        if (p.dataset.panel === key) {
+          p.classList.remove('hidden');
+          p.classList.add('block');
+        } else {
+          p.classList.add('hidden');
+          p.classList.remove('block');
+        }
+      });
+    });
+  });
+</script>

@@ -1,0 +1,44 @@
+---
+import Button from "@/components/Button.astro";
+
+export interface Props {
+  title: string;
+  highlight: string;
+  ctaHref: string;
+  ctaLabel: string;
+  items: Array<{ slug: string; title: string; excerpt: string }>;
+}
+
+const { title, highlight, ctaHref, ctaLabel, items } = Astro.props;
+const [beforeHighlight, afterHighlight] = title.split(highlight);
+---
+
+<section class="bg-white">
+  <div class="container section-space">
+    <div class="mb-12 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+      <h2 class="section-title max-w-[900px]" data-animate="fade-up">
+        {beforeHighlight}<span class="text-outline">{highlight}</span>{afterHighlight}
+      </h2>
+      <div class="shrink-0 md:self-end" data-animate="fade-up" style="--delay: 0.15s">
+        <Button href={ctaHref} label={ctaLabel} />
+      </div>
+    </div>
+    <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+      {items.map((item, i) => (
+        <article class="card-shell p-6 md:p-8" data-animate="fade-up" style={`--delay: ${0.1 + i * 0.1}s`}>
+          <h3 class="text-[24px] font-semibold md:text-[34px]">{item.title}</h3>
+          <p class="mt-5 min-h-[88px] text-[20px] leading-[1.55]">{item.excerpt}</p>
+          <a href={`/services/${item.slug}/`} class="mt-7 inline-flex items-center gap-3 text-[18px] font-medium hover:text-primary">
+            Read Details
+            <span class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white">
+              <svg width="16" height="16" viewBox="0 0 30 30" fill="none" aria-hidden="true">
+                <path d="M7.842 22.158 22.158 7.842" stroke="currentColor" stroke-width="2.38" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M10.526 7.842h11.632v11.632" stroke="currentColor" stroke-width="2.38" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+          </a>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

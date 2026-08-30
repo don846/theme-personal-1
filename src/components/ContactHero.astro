@@ -1,0 +1,104 @@
+---
+export interface Props {
+  breadcrumbLabel: string;
+  title: string;
+  email: string;
+  socialLinks: Array<{ label: string; href: string; icon: string }>;
+}
+
+const { breadcrumbLabel, title, email, socialLinks } = Astro.props;
+---
+
+<section class="muted-grid bg-white">
+  <div class="container section-space">
+
+    <!-- Breadcrumb -->
+    <div class="mb-12 flex items-center gap-4 text-[18px]" data-animate="fade-up">
+      <a href="/" class="font-medium text-primary">Home</a>
+      <span class="h-px w-14 bg-heading/30"></span>
+      <span>{breadcrumbLabel}</span>
+    </div>
+
+    <div class="grid items-center gap-12 lg:grid-cols-2">
+
+      <!-- LEFT: heading + email + social -->
+      <div>
+        <h1 class="section-title text-[32px] leading-[1.12] md:text-[50px] lg:text-[64px] xl:text-[80px]" data-animate="fade-up" style="--delay: 0.1s">
+          {title}
+        </h1>
+
+        <a
+          href={`mailto:${email}`}
+          class="mt-8 inline-block text-[20px] font-medium text-primary transition-opacity hover:opacity-70"
+          data-animate="fade-up"
+          style="--delay: 0.2s"
+        >
+          {email}
+        </a>
+
+        <!-- Social icons -->
+        <div class="mt-6 flex items-center gap-3" data-animate="fade-up" style="--delay: 0.25s">
+          {socialLinks.map((social) => (
+            <a
+              href={social.href}
+              aria-label={social.label}
+              class="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-white text-heading transition-colors hover:border-primary hover:bg-primary hover:text-white"
+              set:html={social.icon}
+            />
+          ))}
+        </div>
+      </div>
+
+      <!-- RIGHT: Contact Form -->
+      <div class="card-shell bg-white p-7 md:p-9" data-animate="fade-up" style="--delay: 0.15s">
+        {/* Add name="contact" data-netlify="true" for Netlify Forms, or replace action/method for your own backend */}
+        <form name="contact" class="space-y-4">
+          <div>
+            <label class="mb-1.5 block text-[15px] font-semibold text-heading" for="name">Your Name</label>
+            <input
+              id="name" type="text" placeholder="Your Name"
+              class="w-full rounded-[10px] border border-border bg-surface px-5 py-4 text-[17px] text-heading outline-none transition-colors placeholder:text-body/40 focus:border-primary"
+            />
+          </div>
+          <div>
+            <label class="mb-1.5 block text-[15px] font-semibold text-heading" for="email">Email Address</label>
+            <input
+              id="email" type="email" placeholder="Email Address"
+              class="w-full rounded-[10px] border border-border bg-surface px-5 py-4 text-[17px] text-heading outline-none transition-colors placeholder:text-body/40 focus:border-primary"
+            />
+          </div>
+          <div>
+            <label class="mb-1.5 block text-[15px] font-semibold text-heading" for="phone">Phone Number</label>
+            <input
+              id="phone" type="tel" placeholder="Phone Number"
+              class="w-full rounded-[10px] border border-border bg-surface px-5 py-4 text-[17px] text-heading outline-none transition-colors placeholder:text-body/40 focus:border-primary"
+            />
+          </div>
+          <div>
+            <label class="mb-1.5 block text-[15px] font-semibold text-heading" for="message">Type Your Message</label>
+            <textarea
+              id="message" rows="5" placeholder="Type Your Message"
+              class="w-full resize-none rounded-[10px] border border-border bg-surface px-5 py-4 text-[17px] text-heading outline-none transition-colors placeholder:text-body/40 focus:border-primary"
+            ></textarea>
+          </div>
+          <button type="submit" class="primary-button w-full justify-center">
+            <span>Send Message</span>
+            <span class="button-circle">
+              <svg width="18" height="18" viewBox="0 0 30 30" fill="none" aria-hidden="true">
+                <path d="M7.854 15h14.292" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+                <path d="m16.34 9.194 5.806 5.806-5.806 5.806" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </button>
+          <p id="form-success" class="hidden rounded-[10px] bg-green-50 px-5 py-3 text-[15px] font-medium text-green-700">
+            Thank you! Your submission has been received!
+          </p>
+          <p id="form-error" class="hidden rounded-[10px] bg-red-50 px-5 py-3 text-[15px] font-medium text-red-600">
+            Oops! Something went wrong while submitting the form.
+          </p>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>

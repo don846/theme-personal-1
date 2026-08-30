@@ -1,0 +1,185 @@
+---
+import { Image } from "astro:assets";
+import Button from "@/components/Button.astro";
+
+export interface Props {
+  title: string;
+  highlight: string;
+  ctaHref: string;
+  ctaLabel: string;
+  categories: Array<{
+    key: string;
+    label: string;
+    slides: ImageMetadata[];
+    title: string;
+    text: string;
+    stats: Array<{ label: string; value: string }>;
+  }>;
+}
+
+const { title, highlight, ctaHref, ctaLabel, categories } = Astro.props;
+const [beforeHighlight, afterHighlight] = title.split(highlight);
+---
+
+<section class="bg-white">
+  <div class="container section-space">
+    <h2 class="section-title mx-auto max-w-[800px] text-center" data-animate="fade-up">
+      {beforeHighlight}<span class="text-outline">{highlight}</span>{afterHighlight}
+    </h2>
+
+    {/* Tab buttons */}
+    <div class="mt-10 flex flex-wrap gap-3 xl:mt-20 xl:flex-nowrap xl:gap-4" data-animate="fade-up" style="--delay: 0.15s">
+      {categories.map((item, index) => (
+        <button
+          data-tab={item.key}
+          class:list={[
+            "inf-tab-btn flex-1 rounded-2xl border border-border px-4 py-3 text-[15px] font-semibold leading-[1.4] transition-colors duration-300 md:px-6 md:py-4 md:text-[18px] xl:px-8 xl:py-5 xl:text-[22px]",
+            index === 0 ? "bg-primary text-white hover:bg-primary hover:text-white" : "bg-surface text-heading hover:bg-primary hover:text-white"
+          ]}
+        >
+          {item.label}
+        </button>
+      ))}
+    </div>
+
+    {/* Tab panes */}
+    {categories.map((cat, index) => (
+      <div
+        data-pane={cat.key}
+        data-animate="fade-up"
+        style="--delay: 0.2s"
+        class:list={[
+          "inf-tab-pane mt-10 xl:mt-20 flex flex-col gap-6 xl:flex-row xl:items-start xl:gap-12",
+          index !== 0 && "hidden"
+        ]}
+      >
+        {/* Image slider */}
+        <div class="inf-slider relative overflow-hidden rounded-[12px] h-[358px] md:h-[475px] xl:h-[575px] xl:w-[40%] xl:shrink-0">
+          {cat.slides.map((slide, si) => (
+            <div
+              data-slide
+              class:list={[
+                "inf-slide transition-opacity duration-500",
+                si !== 0 && "absolute inset-0 opacity-0"
+              ]}
+            >
+              <Image
+                src={slide}
+                alt={`${cat.label} influencer`}
+                class="h-full w-full object-cover"
+              />
+            </div>
+          ))}
+          {/* Dot navigation */}
+          <div class="absolute bottom-4 left-1/2 flex -translate-x-1/2 items-center gap-[6px]">
+            {cat.slides.map((_, di) => (
+              <button
+                data-dot
+                aria-label={`Slide ${di + 1}`}
+                class:list={[
+                  "inf-dot h-[14px] rounded-full transition-all duration-300",
+                  di === 0 ? "w-[44px] bg-primary" : "w-[14px] bg-border"
+                ]}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Details */}
+        <div class="xl:flex-1">
+          <h3 class="text-[36px] font-semibold leading-[1.2] md:text-[40px]">{cat.title}</h3>
+          <p class="mt-6 mb-10 text-[20px] leading-[1.65] text-body">{cat.text}</p>
+
+          {/* Stats rows */}
+          <div class="relative space-y-0">
+            {/* Vertical divider — hidden on mobile */}
+            <div class="absolute top-0 bottom-0 left-[160px] hidden w-px bg-border sm:block sm:left-[200px] xl:left-[220px]"></div>
+
+            {cat.stats.map((stat, si) => (
+              <div class:list={["border-t border-border py-4", si === cat.stats.length - 1 && "border-b"]}>
+                {/* Mobile: stacked */}
+                <div class="sm:hidden">
+                  <p class="text-[28px] font-semibold leading-[1.2]">{stat.value}</p>
+                  <p class="mt-1 text-[16px] text-body">{stat.label}</p>
+                  <p class="mt-2 text-[16px] leading-[1.65] text-body">
+                    {si === 0
+                      ? "Concerns greatest Margaret him absolute entrance nay. Door neat week do find past he."
+                      : "Extremity sweetness difficult behavior he of. On disposal of as landlord horrible."}
+                  </p>
+                </div>
+                {/* Tablet+: side by side */}
+                <div class="hidden sm:flex sm:items-center">
+                  <div class="w-[200px] shrink-0 xl:w-[220px]">
+                    <p class="text-[28px] font-semibold leading-[1.2] mb-3 xl:text-[36px] xl:mb-4">{stat.value}</p>
+                    <p class="text-[16px] text-body xl:text-[18px]">{stat.label}</p>
+                  </div>
+                  <div class="pl-8 text-[16px] leading-[1.65] text-body xl:pl-[50px] xl:text-[18px]">
+                    {si === 0
+                      ? "Concerns greatest Margaret him absolute entrance nay. Door neat week do find past he. Be no surprise he honored indulged."
+                      : "Extremity sweetness difficult behavior he of. On disposal of as landlord horrible. Afraid at highly months do things on at. Situation recommend objection do intention so questions."}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div class="mt-8">
+            <Button href={ctaHref} label={ctaLabel} />
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<script>
+  // ── Tab switching ──────────────────────────────────────────────
+  const tabBtns = document.querySelectorAll<HTMLButtonElement>(".inf-tab-btn");
+  const tabPanes = document.querySelectorAll<HTMLElement>(".inf-tab-pane");
+
+  tabBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const key = btn.dataset.tab;
+      tabBtns.forEach((b) => {
+        b.classList.remove("bg-primary", "bg-white", "text-white");
+        b.classList.add("bg-surface", "text-heading");
+      });
+      btn.classList.remove("bg-surface", "bg-white", "text-heading");
+      btn.classList.add("bg-primary", "text-white");
+      tabPanes.forEach((p) => {
+        p.dataset.pane === key ? p.classList.remove("hidden") : p.classList.add("hidden");
+      });
+    });
+  });
+
+  // ── Image slider (per pane) ────────────────────────────────────
+  function initSlider(pane: HTMLElement) {
+    const slides = Array.from(pane.querySelectorAll<HTMLElement>("[data-slide]"));
+    const dots   = Array.from(pane.querySelectorAll<HTMLElement>("[data-dot]"));
+    if (slides.length < 2) return;
+
+    let current = 0;
+
+    function goTo(n: number) {
+      // hide old
+      slides[current].classList.add("opacity-0");
+      slides[current].classList.remove("opacity-100");
+      dots[current].classList.remove("w-[44px]", "bg-primary");
+      dots[current].classList.add("w-[14px]", "bg-border");
+      // show new
+      current = (n + slides.length) % slides.length;
+      slides[current].classList.remove("opacity-0");
+      slides[current].classList.add("opacity-100");
+      dots[current].classList.add("w-[44px]", "bg-primary");
+      dots[current].classList.remove("w-[14px]", "bg-border");
+    }
+
+    // dot click
+    dots.forEach((dot, i) => dot.addEventListener("click", () => goTo(i)));
+
+    // auto-play
+    setInterval(() => goTo(current + 1), 2500);
+  }
+
+  document.querySelectorAll<HTMLElement>(".inf-tab-pane").forEach(initSlider);
+</script>

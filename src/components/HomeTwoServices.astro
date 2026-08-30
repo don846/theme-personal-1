@@ -1,0 +1,27 @@
+---
+export interface Props {
+  eyebrow: string;
+  title: string;
+  items: Array<{ slug: string; title: string; excerpt: string }>;
+}
+
+const { eyebrow, title, items } = Astro.props;
+---
+
+<section class="bg-white">
+  <div class="container section-space">
+    <p class="mb-5 text-[15px] font-semibold uppercase tracking-[0.12em] text-body" data-animate="fade-up">{eyebrow}</p>
+    <h2 class="section-title mb-6 max-w-[800px] md:mb-8" data-animate="fade-up" style="--delay: 0.1s">{title}</h2>
+    <div class="grid gap-x-8 md:grid-cols-2 xl:grid-cols-3">
+      {items.map((item, i) => (
+        <article class="flex flex-col justify-between border-b border-border py-8" data-animate="fade-up" style={`--delay: ${0.1 + i * 0.08}s`}>
+          <div>
+            <h3 class="text-[22px] font-semibold md:text-[34px]">{item.title}</h3>
+            <p class="mt-5 text-[20px] leading-[1.55]">{item.excerpt}</p>
+          </div>
+          <a href={`/services/${item.slug}/`} class="mt-7 inline-flex items-center gap-3 text-[18px] font-medium">Read Details <span class="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white">↗</span></a>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

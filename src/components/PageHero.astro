@@ -1,0 +1,32 @@
+---
+import { Image } from "astro:assets";
+
+export interface Props {
+  title: string;
+  description: string;
+  image: any;
+  breadcrumb: string;
+  bgClass?: string;
+}
+
+const { title, description, image, breadcrumb, bgClass = "bg-white" } = Astro.props;
+---
+
+<section class:list={["muted-grid", bgClass]}>
+  <div class="container section-space">
+    <div class="grid items-center gap-10 lg:grid-cols-[1fr_0.95fr]">
+      <div>
+        <div class="mb-10 flex items-center gap-4 text-[18px]">
+          <a href="/" class="font-medium text-primary">Home</a>
+          <span class="h-px w-14 bg-heading/30"></span>
+          <span>{breadcrumb}</span>
+        </div>
+        <h1 class="section-title max-w-[720px] text-[34px] md:text-[54px] lg:text-[74px] xl:text-[92px]">{title}</h1>
+        <p class="mt-8 max-w-[620px] text-[17px] md:text-[22px] leading-[1.55] text-body">{description}</p>
+      </div>
+      <div>
+        <Image src={image} alt={title} loading="eager" fetchpriority="high" class="h-auto w-full rounded-none object-cover" />
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,31 @@
+---
+export interface Props {
+  items: Array<{ label: string; value: string; href: string; icon: string }>;
+}
+
+const { items } = Astro.props;
+---
+
+<section class="bg-hero">
+  <div class="container py-10">
+    <div class="grid gap-px sm:grid-cols-3">
+      {items.map((item, i) => (
+        <a
+          href={item.href}
+          class:list={[
+            "flex items-center gap-5 px-8 py-8 transition-opacity hover:opacity-80",
+            i < items.length - 1 ? "sm:border-r sm:border-white/10" : ""
+          ]}
+          data-animate="fade-up"
+          style={`--delay: ${i * 0.1}s`}
+        >
+          <div class="shrink-0" set:html={item.icon} />
+          <div>
+            <p class="text-[13px] font-semibold uppercase tracking-[0.1em] text-white/40">{item.label}</p>
+            <p class="mt-1 text-[18px] font-semibold text-white">{item.value}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

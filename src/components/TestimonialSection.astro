@@ -1,0 +1,225 @@
+---
+import { Image } from "astro:assets";
+import thumbImg1 from "@/assets/images/Testimonial-Slider-Image.jpg";
+import thumbImg2 from "@/assets/images/Testimonial-Author-Image-2.jpg";
+import thumbImg3 from "@/assets/images/Testimonial-Author-Image-1.jpg";
+import testimonialBg from "@/assets/images/Testimonial-Bg-1.png";
+import testimonialShape from "@/assets/images/Testimonial-Shape.png";
+
+export interface Props {
+  title: string;
+  highlight: string;
+  titleSuffix?: string;
+  items: Array<{ quote: string; author: string; role: string; image: any }>;
+  compact?: boolean;
+  /** When true, renders the home-one slider layout (one quote at a time, thumbnail nav). */
+  showAllQuotes?: boolean;
+}
+
+const { title, highlight, titleSuffix = "", items, compact = false, showAllQuotes = false } = Astro.props;
+const thumbImages = [thumbImg1, thumbImg2, thumbImg3];
+---
+
+<section class:list={["relative overflow-hidden bg-hero text-white", showAllQuotes ? "bg-hero-radial" : ""]}>
+  <div class="absolute inset-0 dark-grid opacity-60"></div>
+
+  {/* Decorative background shape — bottom-right */}
+  {showAllQuotes && (
+    <Image
+      src={testimonialBg}
+      alt=""
+      aria-hidden="true"
+      class="pointer-events-none absolute bottom-0 right-0 w-[520px] select-none xl:w-[700px]"
+      loading="lazy"
+      decoding="async"
+    />
+  )}
+
+  {/* Decorative shape dashes — near title */}
+  {showAllQuotes && (
+    <Image
+      src={testimonialShape}
+      alt=""
+      aria-hidden="true"
+      class="pointer-events-none absolute hidden left-[12%] top-[29%] w-[68px] select-none transform-[rotateX(0)_rotateY(180deg)_rotateZ(0)] tablet:block"
+      loading="lazy"
+      decoding="async"
+    />
+  )}
+
+  <div class={`container relative ${compact ? "py-20" : "section-space"}`}>
+
+    {showAllQuotes ? (
+      <div>
+        {/* Title – no eyebrow, left-aligned */}
+        <h2 class="section-title mb-10 text-white md:mb-[60px] xl:mb-20 xl:text-[72px]" data-animate="fade-up">
+          {title} <span class="text-secondary">{highlight}</span>{titleSuffix && <span class="text-white">{titleSuffix}</span>}
+        </h2>
+
+        {/* Slider */}
+        <div class="relative" id="ts-slider" data-animate="fade-up" style="--delay: 0.15s">
+          {items.map((item, i) => (
+            <div
+              class:list={[
+                "ts-slide flex flex-col md:flex-row items-start gap-10 xl:gap-16",
+                i !== 0 && "hidden"
+              ]}
+              data-ts-slide={i}
+            >
+              {/* Quote card */}
+              <div
+                class="relative flex-1 rounded-[12px] border border-white/20 p-6 pb-[72px] md:p-[50px_60px] md:pb-[80px]"
+                style="background: linear-gradient(137deg, rgba(255,255,255,0.08) 0%, rgba(0,0,0,0.45) 46%, rgba(0,0,0,0.65) 100%); backdrop-filter: blur(2px);"
+              >
+                <p class="text-[22px] md:text-[28px] xl:text-[36px] font-medium leading-[1.3] text-white mb-8 xl:mb-[46px]">
+                  "{item.quote}"
+                </p>
+                <p class="text-[18px] md:text-[20px] text-white">
+                  <span class="text-[#f8e15c]">{item.author},</span> {item.role}
+                </p>
+
+                {/* Navigation arrows – bottom-right of card */}
+                <div class="absolute bottom-8 right-8 flex items-center gap-5">
+                  <button class="ts-prev text-white hover:text-primary transition-colors" aria-label="Previous testimonial">
+                    <svg width="28" height="21" viewBox="0 0 38 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M1.157 12.822L12.823 1.155c.314-.303.736-.471 1.173-.468.437.004.855.18 1.164.489.31.309.485.727.489 1.163.003.437-.163.858-.467 1.172l-8.823 8.823H35.668c.442 0 .866.175 1.179.488.312.313.488.737.488 1.179s-.176.866-.488 1.178c-.313.313-.737.489-1.179.489H6.359l8.823 8.822c.159.153.285.337.372.54.088.204.134.422.136.644.002.221-.04.441-.124.646-.084.204-.207.39-.363.547-.157.157-.343.28-.547.363-.205.084-.424.127-.646.125-.221-.002-.44-.048-.643-.136-.203-.087-.387-.214-.54-.372L1.157 15.179C.845 14.866.669 14.443.669 14.001c0-.442.176-.866.488-1.179z" fill="currentColor"/>
+                    </svg>
+                  </button>
+                  <button class="ts-next text-white hover:text-primary transition-colors" aria-label="Next testimonial">
+                    <svg width="36" height="28" viewBox="0 0 56 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M54.768 18.233L37.268.733c-.472-.455-1.103-.707-1.759-.701-.655.006-1.282.269-1.745.733-.464.463-.727 1.09-.732 1.746-.006.655.246 1.287.701 1.758L46.965 17.5H3c-.663 0-1.299.264-1.768.732C.763 18.7.5 19.337.5 20s.263 1.3.732 1.768c.469.468 1.105.732 1.768.732h43.965L33.732 35.733c-.238.23-.43.506-.56.811-.13.305-.2.633-.202.965-.003.332.06.661.185.969.126.307.311.586.546.82.235.235.514.42.821.546.307.125.636.188.968.186.332-.002.66-.072.965-.202.305-.13.581-.32.811-.56L54.768 21.768c.468-.469.731-1.103.731-1.768s-.263-1.299-.731-1.767z" fill="currentColor"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              {/* Thumbnail navigation */}
+              <div class="hidden md:flex flex-col gap-5 items-center justify-center shrink-0">
+                {thumbImages.map((thumb, ti) => (
+                  <button
+                    class="ts-thumb-btn relative inline-flex items-center justify-center w-[80px] h-[80px] xl:w-[90px] xl:h-[90px]"
+                    data-ts-goto={ti}
+                    aria-label={`Go to testimonial ${ti + 1}`}
+                  >
+                    {ti === i && (
+                      <div class="absolute -inset-[5px] rounded-full border-2 border-primary pointer-events-none"></div>
+                    )}
+                    <Image
+                      src={thumb}
+                      alt={items[ti]?.author ?? ""}
+                      class="w-[80px] h-[80px] xl:w-[90px] xl:h-[90px] rounded-full object-cover"
+                      width={90}
+                      height={90}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </button>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    ) : (
+      <div class="grid gap-10 lg:grid-cols-[55%_45%] lg:items-center lg:gap-12" id="ts-simple-slider">
+        {/* Left — eyebrow, title, quote, author, arrows */}
+        <div data-animate="fade-up">
+          <p class="eyebrow text-white/60">Feedback</p>
+          <h2 class="mt-4 text-[36px] font-semibold leading-[1.2] tracking-[-0.03em] text-white md:text-[44px] xl:text-[52px]">
+            {title} <span class="text-secondary">{highlight}</span>{titleSuffix && <span class="text-white">{titleSuffix}</span>}
+          </h2>
+          <div class="mt-10">
+            {items.map((item, index) => (
+              <div class:list={["ts-simple-slide", index !== 0 && "hidden"]} data-ts-simple-slide={index}>
+                <p class="text-[20px] font-medium leading-[1.6] text-white md:text-[24px]">
+                  "{item.quote}"
+                </p>
+                <div class="mt-6">
+                  <span class="text-[18px] font-semibold text-[#f4d84f]">{item.author}</span>
+                  <span class="text-[18px] text-white/60">, {item.role}</span>
+                </div>
+              </div>
+            ))}
+            {/* Navigation arrows */}
+            <div class="mt-8 flex items-center gap-5">
+              <button class="ts-simple-prev text-white/70 hover:text-white transition-colors" aria-label="Previous testimonial">
+                <svg width="28" height="21" viewBox="0 0 38 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M1.157 12.822L12.823 1.155c.314-.303.736-.471 1.173-.468.437.004.855.18 1.164.489.31.309.485.727.489 1.163.003.437-.163.858-.467 1.172l-8.823 8.823H35.668c.442 0 .866.175 1.179.488.312.313.488.737.488 1.179s-.176.866-.488 1.178c-.313.313-.737.489-1.179.489H6.359l8.823 8.822c.159.153.285.337.372.54.088.204.134.422.136.644.002.221-.04.441-.124.646-.084.204-.207.39-.363.547-.157.157-.343.28-.547.363-.205.084-.424.127-.646.125-.221-.002-.44-.048-.643-.136-.203-.087-.387-.214-.54-.372L1.157 15.179C.845 14.866.669 14.443.669 14.001c0-.442.176-.866.488-1.179z" fill="currentColor"/>
+                </svg>
+              </button>
+              <button class="ts-simple-next text-white/70 hover:text-white transition-colors" aria-label="Next testimonial">
+                <svg width="36" height="28" viewBox="0 0 56 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M54.768 18.233L37.268.733c-.472-.455-1.103-.707-1.759-.701-.655.006-1.282.269-1.745.733-.464.463-.727 1.09-.732 1.746-.006.655.246 1.287.701 1.758L46.965 17.5H3c-.663 0-1.299.264-1.768.732C.763 18.7.5 19.337.5 20s.263 1.3.732 1.768c.469.468 1.105.732 1.768.732h43.965L33.732 35.733c-.238.23-.43.506-.56.811-.13.305-.2.633-.202.965-.003.332.06.661.185.969.126.307.311.586.546.82.235.235.514.42.821.546.307.125.636.188.968.186.332-.002.66-.072.965-.202.305-.13.581-.32.811-.56L54.768 21.768c.468-.469.731-1.103.731-1.768s-.263-1.299-.731-1.767z" fill="currentColor"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Right — images cycling in sync with slides */}
+        <div class="relative flex justify-end">
+          {items.map((item, index) => (
+            <div class:list={["ts-simple-img", index !== 0 && "hidden"]} data-ts-simple-img={index}>
+              <Image src={item.image} alt={item.author} class="h-auto w-full max-w-full object-cover" loading="lazy" decoding="async" />
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+
+  </div>
+</section>
+
+<script>
+  // Testimonial slider (home-one variant)
+  const slider = document.getElementById("ts-slider");
+  if (slider) {
+    const slides = Array.from(slider.querySelectorAll<HTMLElement>(".ts-slide"));
+    let current = 0;
+
+    function goTo(n: number) {
+      slides[current].classList.add("hidden");
+      current = (n + slides.length) % slides.length;
+      slides[current].classList.remove("hidden");
+    }
+
+    slider.querySelectorAll<HTMLButtonElement>("[data-ts-goto]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const idx = parseInt(btn.dataset.tsGoto ?? "0", 10);
+        goTo(idx);
+      });
+    });
+
+    slider.querySelectorAll<HTMLButtonElement>(".ts-prev").forEach((btn) => {
+      btn.addEventListener("click", () => goTo(current - 1));
+    });
+
+    slider.querySelectorAll<HTMLButtonElement>(".ts-next").forEach((btn) => {
+      btn.addEventListener("click", () => goTo(current + 1));
+    });
+  }
+
+  // Simple testimonial slider (home-two variant)
+  const simpleSlider = document.getElementById("ts-simple-slider");
+  if (simpleSlider) {
+    const slides = Array.from(simpleSlider.querySelectorAll<HTMLElement>(".ts-simple-slide"));
+    const imgs = Array.from(simpleSlider.querySelectorAll<HTMLElement>(".ts-simple-img"));
+    let current = 0;
+
+    function goToSimple(n: number) {
+      slides[current].classList.add("hidden");
+      imgs[current]?.classList.add("hidden");
+      current = (n + slides.length) % slides.length;
+      slides[current].classList.remove("hidden");
+      imgs[current]?.classList.remove("hidden");
+    }
+
+    simpleSlider.querySelectorAll<HTMLButtonElement>(".ts-simple-prev").forEach((btn) => {
+      btn.addEventListener("click", () => goToSimple(current - 1));
+    });
+
+    simpleSlider.querySelectorAll<HTMLButtonElement>(".ts-simple-next").forEach((btn) => {
+      btn.addEventListener("click", () => goToSimple(current + 1));
+    });
+  }
+</script>

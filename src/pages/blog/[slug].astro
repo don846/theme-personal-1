@@ -1,0 +1,82 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import BlogGrid from "@/components/BlogGrid.astro";
+import { blogPosts } from "@/data/content";
+
+export function getStaticPaths() {
+  return blogPosts.map((post) => ({ params: { slug: post.slug }, props: { post } }));
+}
+
+const { post } = Astro.props;
+---
+
+<BaseLayout title={`${post.title} | Influvo Astro Theme`} description={post.excerpt}>
+
+  {/* Post hero — breadcrumb + title only */}
+  <section class="bg-white py-[60px]">
+    <div class="container">
+      <div class="mb-8 flex items-center gap-4 text-[18px]" data-animate="fade-up">
+        <a href="/" class="font-medium text-primary">Home</a>
+        <span class="h-px w-14 bg-heading/30"></span>
+        <span>Blog details</span>
+      </div>
+      <h1 class="max-w-[900px] text-[26px] font-semibold leading-[1.2] md:text-[40px] lg:text-[56px]" data-animate="fade-up" style="--delay: 0.1s">{post.title}</h1>
+    </div>
+  </section>
+
+  {/* Blog content */}
+  <section class="pb-[60px] md:pb-[80px]">
+    <div class="container">
+
+      {/* Hero image */}
+      <Image src={post.heroImage} alt={post.title} class="h-auto w-full object-cover" data-animate="fade-blur" quality={100} />
+
+      {/* Article body */}
+      <article class="mt-12 xl:mt-16">
+
+        {/* Introduction */}
+        <h2 class="text-[24px] font-semibold leading-[1.3] md:text-[36px] xl:text-[48px]" data-animate="fade-up">Introduction</h2>
+        <p class="mt-6 text-[17px] md:text-[22px] leading-[1.65]" data-animate="fade-up" style="--delay: 0.1s">{post.intro}</p>
+
+        {/* Gallery */}
+        <div class="mt-10 grid gap-6 md:grid-cols-2" data-animate="fade-blur" style="--delay: 0.1s">
+          <Image src={post.imageLeft} alt="Blog detail image" class="h-auto w-full object-cover" />
+          <Image src={post.imageRight} alt="Blog detail image" class="h-auto w-full object-cover" />
+        </div>
+
+        {/* Content sections */}
+        {post.sections.map((section, i) => (
+          <div class="mt-10 xl:mt-14" data-animate="fade-up" style={`--delay: ${i * 0.1}s`}>
+            <h3 class="text-[20px] font-semibold leading-[1.3] md:text-[28px] xl:text-[36px]">{section.title}</h3>
+            <p class="mt-4 text-[17px] md:text-[22px] leading-[1.65]">{section.text}</p>
+            <ul class="mt-6 flex flex-col gap-4">
+              {section.bullets.map((item) => (
+                <li class="flex items-start gap-4">
+                  <span class="mt-[6px] shrink-0">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="0.571429" y="0.571429" width="22.8571" height="22.8571" rx="11.4286" stroke="#7D30E2" stroke-width="1.14286"/>
+                      <circle cx="11.9998" cy="12.0001" r="5.09554" fill="#7D30E2"/>
+                    </svg>
+                  </span>
+                  <span class="text-[17px] md:text-[22px] leading-[1.65]">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+
+        {/* Conclusion */}
+        <div class="mt-10 border-t border-border pt-10 xl:mt-14 xl:pt-14" data-animate="fade-up">
+          <h3 class="text-[24px] font-semibold leading-[1.3] md:text-[36px] xl:text-[48px]">Conclusion</h3>
+          <p class="mt-6 text-[17px] md:text-[22px] leading-[1.65]">{post.conclusion}</p>
+        </div>
+
+      </article>
+    </div>
+  </section>
+
+  {/* Recent posts */}
+  <BlogGrid title="Recent Post" posts={blogPosts.filter(p => p.slug !== post.slug).slice(0, 2)} compact={true} />
+
+</BaseLayout>

@@ -1,0 +1,92 @@
+---
+import AuthLayout from "@/layouts/AuthLayout.astro";
+import logo from "@/assets/images/Frame-2147223321.png";
+import authImage from "@/assets/images/Authentication-Right-Image-1.jpg";
+import { Image } from "astro:assets";
+---
+
+<AuthLayout title="Sign In | Influvo Astro Theme">
+  <main class="flex h-screen w-full gap-6 p-6">
+
+    {/* Left — form panel */}
+    <div class="flex w-full flex-col items-center justify-center rounded bg-[#f7f5fa] px-10 py-10 lg:w-1/2">
+      <div class="w-full max-w-[420px]">
+
+        {/* Logo */}
+        <a href="/" class="mx-auto mb-8 block w-[185px]">
+          <Image src={logo} alt="Influvo" class="h-auto w-full" />
+        </a>
+
+        {/* Heading */}
+        <div class="mb-8 text-center">
+          <h1 class="text-[32px] font-semibold leading-[1.2] text-heading">Hi, Welcome 👋</h1>
+          <p class="mt-2 text-[18px] text-body">Please login to your account</p>
+        </div>
+
+        {/* Form */}
+        <form class="w-full" method="get">
+          <div class="mb-4 flex flex-col gap-6">
+
+            <div>
+              <label for="username" class="mb-2 block text-[20px] font-medium leading-[1.3] text-heading">
+                Username or Email Address :
+              </label>
+              <input
+                id="username"
+                name="username"
+                type="text"
+                placeholder="Type username"
+                required
+                class="h-[52px] w-full rounded-md border border-[#dfe1e7] bg-white px-4 text-[17px] text-heading outline-none focus:border-primary"
+              />
+            </div>
+
+            <div>
+              <label for="password" class="mb-2 block text-[20px] font-medium leading-[1.3] text-heading">
+                Password :
+              </label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                placeholder="Type password :"
+                required
+                class="h-[52px] w-full rounded-md border border-[#dfe1e7] bg-white px-4 text-[17px] text-heading outline-none focus:border-primary"
+              />
+            </div>
+
+          </div>
+
+          {/* Submit button */}
+          <button
+            type="submit"
+            class="flex h-[52px] w-full items-center justify-center gap-3 bg-primary text-[18px] font-medium text-white transition-colors duration-300 hover:bg-heading"
+          >
+            Log in now
+            <svg width="20" height="20" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7.8545 15H22.1455" stroke="currentColor" stroke-width="1.68" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M16.3398 9.19427L22.1456 15L16.3398 20.8057" stroke="currentColor" stroke-width="1.68" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+
+          {/* Bottom link */}
+          <div class="mt-8 flex items-center justify-center gap-4 text-[17px]">
+            <span class="text-heading">Don't have an account?</span>
+            <a href="/sign-up/" class="font-semibold text-primary transition-colors hover:text-heading">Sign Up</a>
+          </div>
+        </form>
+
+      </div>
+    </div>
+
+    {/* Right — image panel */}
+    <div class="hidden overflow-hidden rounded lg:block lg:w-1/2">
+      <Image
+        src={authImage}
+        alt="Sign in"
+        class="h-full w-full object-cover"
+      />
+    </div>
+
+  </main>
+</AuthLayout>

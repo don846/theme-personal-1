@@ -1,0 +1,27 @@
+---
+import { siteMeta } from "@/data/site";
+import "@/styles/global.css";
+
+export interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = siteMeta.title, description = siteMeta.description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={Astro.url.href} />
+    <link rel="icon" type="image/png" href={siteMeta.favicon.src} />
+    <meta name="theme-color" content="#7d30e2" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

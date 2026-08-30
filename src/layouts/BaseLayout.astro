@@ -1,0 +1,73 @@
+---
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import BackToTop from "@/components/BackToTop.astro";
+import { siteMeta } from "@/data/site";
+import "@/styles/global.css";
+import urbanistRegularUrl from "@/assets/fonts/Urbanist-Regular.ttf?url";
+import urbanistSemiBoldUrl from "@/assets/fonts/Urbanist-SemiBold.ttf?url";
+
+export interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  headerTheme?: "light" | "dark";
+  /** Passed to Header when headerTheme is dark (Webflow Home One CTA). */
+  headerDarkCtaStyle?: "light" | "nav-dark";
+}
+
+const {
+  title = siteMeta.title,
+  description = siteMeta.description,
+  image = siteMeta.ogImage.src,
+  headerTheme = "light",
+  headerDarkCtaStyle = "light"
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/png" href={siteMeta.favicon.src} />
+    <link rel="preload" as="font" type="font/ttf" href={urbanistRegularUrl} crossorigin />
+    <link rel="preload" as="font" type="font/ttf" href={urbanistSemiBoldUrl} crossorigin />
+    <link rel="canonical" href={Astro.url.href} />
+    <meta property="og:url" content={Astro.url.href} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
+    <meta name="theme-color" content="#7d30e2" />
+  </head>
+  <body>
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[9999] focus:rounded focus:bg-primary focus:px-4 focus:py-2 focus:text-white focus:outline-none">Skip to main content</a>
+    <Header theme={headerTheme} darkCtaStyle={headerDarkCtaStyle} />
+    <main id="main-content">
+      <slot />
+    </main>
+    <Footer />
+    <BackToTop />
+  </body>
+  <script>
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("in-view");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+    document.querySelectorAll("[data-animate]").forEach((el) => observer.observe(el));
+  </script>
+</html>

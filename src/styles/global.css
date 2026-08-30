@@ -1,0 +1,302 @@
+@import "tailwindcss";
+
+/* ── Design Tokens ───────────────────────────────────────────── */
+@theme {
+  /* Colors */
+  --color-body:      #3b3b3b;
+  --color-heading:   #000000;
+  --color-primary:   #7d30e2;
+  --color-secondary: #fe7d4e;
+  --color-lime:      #ccfb4d;
+  --color-surface:   #faf8fc;
+  --color-border:    #e5daf2;
+  --color-hero:      #0d0616;
+
+  /* Typography */
+  --font-sans: "Urbanist", Arial, sans-serif;
+
+  /* Shadows */
+  --shadow-soft: 0 20px 40px rgba(125, 48, 226, 0.12);
+
+  /* Border radius */
+  --radius-4xl: 2rem;
+
+  /* Background images */
+  --background-image-grid-soft:
+    linear-gradient(rgba(125, 48, 226, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(125, 48, 226, 0.06) 1px, transparent 1px);
+  --background-image-hero-radial:
+    radial-gradient(circle at 50% 45%, rgba(125, 48, 226, 0.55), rgba(13, 6, 22, 0) 42%),
+    radial-gradient(circle at 55% 72%, rgba(125, 48, 226, 0.95), rgba(13, 6, 22, 0.15) 28%, rgba(13, 6, 22, 0) 52%),
+    radial-gradient(circle at 68% 22%, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0) 24%),
+    radial-gradient(circle at 8% 82%, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0) 22%),
+    linear-gradient(180deg, #1a0d2e 0%, #0d0616 55%, #0a0512 100%);
+  --background-image-hero-light:
+    radial-gradient(circle at 55% 70%, rgba(125, 48, 226, 0.14), rgba(125, 48, 226, 0) 28%),
+    radial-gradient(circle at 72% 24%, rgba(254, 125, 78, 0.14), rgba(254, 125, 78, 0) 22%),
+    radial-gradient(circle at 28% 74%, rgba(204, 251, 77, 0.16), rgba(204, 251, 77, 0) 18%),
+    linear-gradient(180deg, #fcfbff 0%, #faf8fc 100%);
+
+  /* Background sizes */
+  --background-size-grid: 68px 68px;
+
+  /* Breakpoints */
+  --breakpoint-xs: 480px;
+  --breakpoint-tablet: 992px;
+}
+
+/* ── Hero breakpoint helpers ────────────────────────────────── */
+@utility hero-tablet {
+  display: none;
+  @media (min-width: 768px) and (max-width: 991px) {
+    display: block;
+  }
+}
+
+@utility hero-desktop {
+  display: none;
+  @media (min-width: 992px) {
+    display: flex;
+  }
+}
+
+/* ── Container ───────────────────────────────────────────────── */
+/*
+  v4 has no container plugin. This @utility replicates v3's
+  center:true + responsive padding + max-width 1320px at xl.
+  All existing `container` usages in templates need no changes.
+*/
+@utility container {
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+  width: 100%;
+
+  @media (width >= 768px) {
+    padding-inline: 1.75rem;
+  }
+
+  @media (width >= 1024px) {
+    padding-inline: 2rem;
+  }
+
+  @media (width >= 1320px) {
+    max-width: 1384px;
+  }
+
+  @media (width >= 1440px) {
+    padding-inline: 0;
+    max-width: 1320px;
+  }
+}
+
+@font-face {
+  font-family: "Urbanist";
+  src: url("../assets/fonts/Urbanist-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Urbanist";
+  src: url("../assets/fonts/Urbanist-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Urbanist";
+  src: url("../assets/fonts/Urbanist-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Urbanist";
+  src: url("../assets/fonts/Urbanist-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-sans text-[20px] leading-[1.5] text-body antialiased;
+    background-color: #ffffff;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply text-heading;
+  }
+
+  a {
+    @apply transition-colors duration-200;
+  }
+}
+
+@layer components {
+  .section-space {
+    @apply py-[60px] md:py-[80px] xl:py-[100px];
+  }
+
+  .section-space-sm {
+    @apply py-12 md:py-16 xl:py-20;
+  }
+
+  .eyebrow {
+    @apply text-[14px] font-medium uppercase tracking-[0.08em] text-heading;
+  }
+
+  .section-title {
+    @apply text-[42px] font-semibold leading-[1.14] tracking-[-0.04em] md:text-[52px] xl:text-[64px];
+  }
+
+  .display-title {
+    @apply text-[38px] font-semibold leading-[1.2] tracking-[-0.02em] md:text-[60px] xl:text-[90px];
+  }
+
+  .text-outline {
+    background-image: url('../assets/images/Highlight.png');
+    background-position: 50% 100%;
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+
+  .primary-button {
+    @apply inline-flex items-center gap-3 rounded-full bg-primary px-5 py-2.5 text-[18px] font-semibold text-white shadow-soft;
+  }
+
+  .primary-button.compact {
+    @apply gap-2 px-3.5 py-1.5 text-[15px] font-semibold leading-none;
+  }
+
+  .primary-button.compact .button-circle {
+    @apply h-8 w-8;
+  }
+
+  .primary-button.light {
+    @apply bg-white text-heading;
+  }
+
+  .primary-button.nav-dark {
+    @apply border border-white/30 bg-white/[0.05] text-white shadow-none hover:border-white/40 hover:bg-white/[0.09];
+  }
+
+  .primary-button.nav-dark .button-circle {
+    @apply bg-white/25 text-white;
+  }
+
+  .primary-button.outline {
+    @apply border border-border bg-transparent text-heading shadow-none;
+  }
+
+  .button-circle {
+    @apply flex h-9 w-9 items-center justify-center rounded-full bg-white text-heading;
+  }
+
+  .button-circle.dark {
+    @apply bg-heading text-white;
+  }
+
+  .card-shell {
+    @apply rounded-[24px] border border-border bg-white;
+  }
+
+  .muted-grid {
+    background-image: linear-gradient(rgba(125, 48, 226, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(125, 48, 226, 0.05) 1px, transparent 1px);
+    background-size: 98px 98px;
+  }
+
+  .dark-grid {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    background-size: 68px 68px;
+  }
+
+  .marquee-track {
+    animation: marquee 24s linear infinite;
+  }
+
+  /* ── Scroll animations ─────────────────────────────────────── */
+  [data-animate] {
+    opacity: 0;
+    transition:
+      opacity 0.7s ease,
+      transform 0.7s ease,
+      filter 0.7s ease;
+    transition-delay: var(--delay, 0s);
+  }
+
+  /* "fade" = opacity only, no transform — safe for elements that already use transform (e.g. -translate-x-1/2) */
+  [data-animate="fade"].in-view {
+    opacity: 1;
+  }
+
+  /* All other types reset transform + filter on enter */
+  [data-animate="fade-up"].in-view,
+  [data-animate="fade-down"].in-view,
+  [data-animate="fade-left"].in-view,
+  [data-animate="fade-right"].in-view,
+  [data-animate="fade-blur"].in-view,
+  [data-animate="scale-y"].in-view {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  [data-animate="fade-up"] {
+    transform: translateY(30px);
+  }
+
+  [data-animate="fade-down"] {
+    transform: translateY(-20px);
+  }
+
+  [data-animate="fade-left"] {
+    transform: translateX(-30px);
+  }
+
+  [data-animate="fade-right"] {
+    transform: translateX(30px);
+  }
+
+  [data-animate="fade-blur"] {
+    transform: translateY(10px);
+    filter: blur(5px);
+  }
+
+  [data-animate="scale-y"] {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    [data-animate] {
+      opacity: 1;
+      transform: none !important;
+      filter: none !important;
+      transition: none;
+    }
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-33.333%);
+  }
+}

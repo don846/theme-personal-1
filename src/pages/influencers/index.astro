@@ -1,0 +1,19 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHero from "@/components/PageHero.astro";
+import InfluencerDirectory from "@/components/InfluencerDirectory.astro";
+import { influencerCards, influencerCategories, influencersPage, pageHeroes } from "@/data/content";
+
+const categories = influencerCategories.map((cat) => ({ key: cat.key, label: cat.label }));
+---
+
+<BaseLayout title="Influencers | Influvo Astro Theme" description="Browse our curated network of beauty, technology, food, and sport influencers — each verified for engagement, reach, and brand alignment.">
+  <PageHero {...pageHeroes.influencers} />
+
+  <InfluencerDirectory
+    title={influencersPage.title}
+    categories={categories}
+    cards={influencerCards}
+    defaultCategory={influencersPage.defaultCategory}
+  />
+</BaseLayout>

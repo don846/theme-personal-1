@@ -1,0 +1,72 @@
+---
+import { Image } from "astro:assets";
+
+export interface Props {
+  heading: string;
+  description: string;
+  members: Array<{ name: string; role: string; image: ImageMetadata }>;
+}
+
+const { heading, description, members } = Astro.props;
+---
+
+<section class="bg-white">
+  <div class="container section-space">
+    <div class="text-center">
+      <h2 class="section-title" data-animate="fade-up">{heading}</h2>
+      <p class="mx-auto mt-6 max-w-[930px] text-[17px] md:text-[22px] leading-[1.65]" data-animate="fade-up" style="--delay: 0.1s">
+        {description}
+      </p>
+    </div>
+    <div class="mt-14 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+      {members.map((member, i) => (
+        <article class="team-card group relative overflow-hidden" data-animate="fade-up" style={`--delay: ${0.1 + i * 0.1}s`}>
+          <Image
+            src={member.image}
+            alt={member.name}
+            class="h-auto w-full object-cover"
+          />
+          <div class="team-info-block absolute bottom-[30px] left-0 flex items-center rounded-r-[50px] bg-white py-4 pl-4 pr-6 shadow-soft">
+            <div>
+              <p class="text-[22px] font-semibold leading-tight text-heading">{member.name}</p>
+              <p class="mt-1 text-[18px] text-body">{member.role}</p>
+            </div>
+            <div class="team-social-block ml-6 flex max-w-[80px] items-center gap-4 overflow-hidden transition-all duration-300 lg:max-w-0 lg:group-hover:max-w-[80px]">
+              <a
+                href="https://x.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="shrink-0 transition-opacity duration-300 hover:text-primary lg:opacity-0 lg:group-hover:opacity-100"
+                aria-label={`${member.name} on X`}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M14.2339 10.1624L22.9764 0H20.9047L13.3137 8.82384L7.2507 0H0.257812L9.42618 13.3432L0.257812 24H2.3296L10.3459 14.6817L16.7489 24H23.7418L14.2334 10.1624H14.2339ZM11.3963 13.4608L10.4674 12.1321L3.0761 1.55961H6.25825L12.2231 10.0919L13.1521 11.4206L20.9057 22.5113H17.7235L11.3963 13.4613V13.4608Z" fill="currentColor"/>
+                </svg>
+              </a>
+              <a
+                href="https://www.instagram.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="shrink-0 transition-opacity duration-300 hover:text-primary lg:opacity-0 lg:group-hover:opacity-100"
+                aria-label={`${member.name} on Instagram`}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g clip-path={`url(#clip-team-insta-${i})`}>
+                    <path d="M17.4208 0H6.57923C2.95144 0 0 2.95144 0 6.57928V17.4208C0 21.0486 2.95144 24 6.57923 24H17.4208C21.0486 24 24 21.0486 24 17.4208V6.57928C24 2.95144 21.0486 0 17.4208 0ZM22.5827 17.4208C22.5827 20.2671 20.2671 22.5827 17.4208 22.5827H6.57923C3.73294 22.5827 1.41731 20.2671 1.41731 17.4208V6.57928C1.41731 3.73294 3.73294 1.41731 6.57923 1.41731H17.4208C20.2671 1.41731 22.5827 3.73294 22.5827 6.57928V17.4208Z" fill="currentColor"/>
+                    <path d="M12.0007 5.41797C8.37095 5.41797 5.41797 8.37095 5.41797 12.0007C5.41797 15.6304 8.37091 18.5834 12.0007 18.5834C15.6304 18.5834 18.5834 15.6303 18.5834 12.0006C18.5834 8.37091 15.6304 5.41797 12.0007 5.41797ZM12.0007 17.1661C9.15245 17.1661 6.83523 14.8488 6.83523 12.0006C6.83523 9.15241 9.15245 6.83519 12.0007 6.83519C14.8489 6.83519 17.1662 9.15245 17.1662 12.0007C17.1662 14.8489 14.8489 17.1661 12.0007 17.1661Z" fill="currentColor"/>
+                    <path d="M18.9765 3.02344C17.8737 3.02344 16.9766 3.92067 16.9766 5.02345C16.9766 6.12623 17.8737 7.02342 18.9765 7.02342C20.0793 7.02342 20.9765 6.12619 20.9765 5.02341C20.9765 3.92063 20.0793 3.02344 18.9765 3.02344ZM18.9765 5.60606C18.6553 5.60606 18.3939 5.34469 18.3939 5.02341C18.3939 4.70213 18.6553 4.44075 18.9765 4.44075C19.2978 4.44075 19.5592 4.70217 19.5592 5.02341C19.5592 5.34464 19.2978 5.60606 18.9765 5.60606Z" fill="currentColor"/>
+                  </g>
+                  <defs>
+                    <clipPath id={`clip-team-insta-${i}`}>
+                      <rect width="24" height="24" fill="white"/>
+                    </clipPath>
+                  </defs>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

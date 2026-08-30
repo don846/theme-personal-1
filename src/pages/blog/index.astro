@@ -1,0 +1,14 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHero from "@/components/PageHero.astro";
+import BlogGrid from "@/components/BlogGrid.astro";
+import LogoMarquee from "@/components/LogoMarquee.astro";
+import { blogPosts, pageHeroes } from "@/data/content";
+import { marqueeLogos } from "@/data/site";
+---
+
+<BaseLayout title="Blog | Influvo Astro Theme" description="Expert insights, campaign strategies, and influencer marketing trends — the Influvo blog keeps your brand ahead of the curve.">
+  <PageHero {...pageHeroes.blog} bgClass="bg-white" />
+  <BlogGrid title="The Art and Science of Influencer Marketing" posts={blogPosts} />
+  <LogoMarquee logos={marqueeLogos} />
+</BaseLayout>

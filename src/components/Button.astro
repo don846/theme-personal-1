@@ -1,0 +1,30 @@
+---
+export interface Props {
+  href?: string;
+  label: string;
+  variant?: "primary" | "light" | "outline" | "nav-dark";
+  /** Tighter pill for floating dark headers (Webflow scale). */
+  compact?: boolean;
+  class?: string;
+}
+
+const { href = "#", label, variant = "primary", compact = false, class: className = "" } = Astro.props;
+const variantClass =
+  variant === "light"
+    ? "light"
+    : variant === "outline"
+      ? "outline"
+      : variant === "nav-dark"
+        ? "nav-dark"
+        : "";
+---
+
+<a href={href} class:list={["primary-button", variantClass, compact && "compact", className]}>
+  <span>{label}</span>
+  <span class:list={["button-circle", variant === "light" ? "dark" : ""]}>
+    <svg width="18" height="18" viewBox="0 0 30 30" fill="none" aria-hidden="true">
+      <path d="M7.854 15h14.292" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" />
+      <path d="m16.34 9.194 5.806 5.806-5.806 5.806" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  </span>
+</a>

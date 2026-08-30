@@ -1,0 +1,115 @@
+---
+import { Image } from "astro:assets";
+
+export interface Props {
+  title: string;
+  categories: Array<{ key: string; label: string }>;
+  cards: Array<{
+    category: string;
+    name: string;
+    role: string;
+    image: ImageMetadata;
+    followers: Array<{ platform: string; value: string }>;
+    bars: Array<{ label: string; value: number }>;
+  }>;
+  defaultCategory: string;
+}
+
+const { title, categories, cards, defaultCategory } = Astro.props;
+---
+
+<section class="bg-surface" data-default-category={defaultCategory}>
+  <div class="container section-space">
+    <h2 class="section-title mx-auto max-w-[1100px] text-center" data-animate="fade-up">{title}</h2>
+    <div class="mt-14 grid gap-10 xl:grid-cols-[240px_1fr]">
+      {/* Tab buttons */}
+      <div class="flex flex-wrap gap-3 xl:flex-col xl:space-y-0" data-animate="fade-up" style="--delay: 0.1s">
+        {categories.map((item) => (
+          <button
+            class:list={[
+              "inf-tab-btn rounded-[4px] border border-border px-4 py-2.5 text-[15px] font-medium transition-colors xl:w-full xl:px-8 xl:py-5 xl:text-[24px]",
+              item.key === defaultCategory ? "bg-primary text-white hover:bg-primary hover:text-white" : "bg-white text-heading hover:bg-primary hover:text-white"
+            ]}
+            data-category={item.key}
+            type="button"
+          >
+            {item.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Cards filtered by category */}
+      <div class="space-y-10">
+        {cards.map((card, i) => (
+          <article
+            class="inf-card card-shell overflow-hidden"
+            data-card-category={card.category}
+            data-animate="fade-up"
+            style={`--delay: ${0.15 + i * 0.1}s`}
+          >
+            <Image src={card.image} alt={card.name} class="h-auto w-full object-cover" />
+            <div class="p-5 md:p-8">
+              <h3 class="text-[26px] md:text-[40px] font-semibold">{card.name}</h3>
+              <p class="mt-2 text-[17px] md:text-[22px]">{card.role}</p>
+              <div class="mt-6 grid gap-4 grid-cols-2 md:gap-6 xl:grid-cols-4">
+                {card.followers.map((item) => (
+                  <div>
+                    <p class="text-[16px] md:text-[20px] font-semibold">{item.value}</p>
+                    <p class="mt-1 text-[14px] md:text-[18px] text-body/75">{item.platform}</p>
+                  </div>
+                ))}
+              </div>
+              <div class="mt-6 md:mt-8 space-y-5">
+                {card.bars.map((item) => (
+                  <div>
+                    <div class="mb-2 flex items-center justify-between text-[15px] md:text-[20px] font-medium">
+                      <span>{item.label}</span>
+                      <span>{item.value}%</span>
+                    </div>
+                    <div class="h-4 rounded-full bg-[#f1edf7]">
+                      <div class="h-4 rounded-full bg-primary" style={`width:${item.value}%`}></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const section = document.querySelector<HTMLElement>('[data-default-category]');
+  const tabs = document.querySelectorAll<HTMLButtonElement>('.inf-tab-btn');
+  const cards = document.querySelectorAll<HTMLElement>('.inf-card');
+
+  function filterCards(category: string) {
+    cards.forEach(card => {
+      if (card.dataset.cardCategory === category) {
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      // Update active tab style
+      tabs.forEach(t => {
+        t.classList.remove('bg-primary', 'bg-surface', 'text-white');
+        t.classList.add('bg-white', 'text-heading');
+      });
+      tab.classList.remove('bg-white', 'bg-surface', 'text-heading');
+      tab.classList.add('bg-primary', 'text-white');
+
+      // Filter cards
+      filterCards(tab.dataset.category!);
+    });
+  });
+
+  // Show only the default category's cards on load
+  filterCards(section?.dataset.defaultCategory ?? '');
+</script>

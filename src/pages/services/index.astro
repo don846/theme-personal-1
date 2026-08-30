@@ -1,0 +1,16 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHero from "@/components/PageHero.astro";
+import ServiceGrid from "@/components/ServiceGrid.astro";
+import LogoMarquee from "@/components/LogoMarquee.astro";
+import TestimonialSection from "@/components/TestimonialSection.astro";
+import { pageHeroes, serviceItems, testimonials } from "@/data/content";
+import { marqueeLogos } from "@/data/site";
+---
+
+<BaseLayout title="Services | Influvo Astro Theme" description="Explore Influvo's full range of influencer marketing services — from content strategy and media analytics to social media management and product branding.">
+  <PageHero {...pageHeroes.services} bgClass="bg-white" />
+  <ServiceGrid title="Our Influencer Marketing Services" items={serviceItems} />
+  <LogoMarquee logos={marqueeLogos} />
+  <TestimonialSection title="Feedback That" highlight="Fuels Our Passion" items={testimonials} compact={true} />
+</BaseLayout>

@@ -1,0 +1,21 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ContactHero from "@/components/ContactHero.astro";
+import ContactInfoBar from "@/components/ContactInfoBar.astro";
+import ContactMap from "@/components/ContactMap.astro";
+import { contactPage } from "@/data/content";
+import { siteMeta } from "@/data/site";
+---
+
+<BaseLayout title="Contact Us | Influvo" description="Get in touch with the Influvo team. Whether you have a campaign question, a partnership inquiry, or need support — we are ready to help.">
+  <ContactHero
+    breadcrumbLabel={contactPage.breadcrumbLabel}
+    title={contactPage.title}
+    email={contactPage.email}
+    socialLinks={contactPage.socialLinks}
+  />
+
+  <ContactInfoBar items={contactPage.info} />
+
+  <ContactMap src={siteMeta.mapEmbedUrl} title="Office location" />
+</BaseLayout>

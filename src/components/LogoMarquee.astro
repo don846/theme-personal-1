@@ -1,0 +1,19 @@
+---
+import { Image } from "astro:assets";
+
+export interface Props {
+  logos: Array<{ src: ImageMetadata; alt: string }>;
+}
+
+const { logos } = Astro.props;
+---
+
+<section class="overflow-hidden border-y border-border bg-white py-8">
+  <div class="marquee-track flex min-w-max items-center gap-16">
+    {[...logos, ...logos, ...logos].map((item) => (
+      <div class="flex min-w-[160px] items-center justify-center">
+        <Image src={item.src} alt={item.alt} class="h-10 w-auto" loading="lazy" decoding="async" />
+      </div>
+    ))}
+  </div>
+</section>
